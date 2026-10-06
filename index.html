@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鴻海科技集團 | 內部系統網站模板大全 (10+ 現代白極簡樣板)</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.5; }
+
+    /* 頂部 Hero 區塊 */
+    .hero {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .hero-container { max-width: 960px; margin: 0 auto; }
+    .brand-logo-hero { height: 46px; width: auto; margin-bottom: 1.25rem; }
+    .hero-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; color: #0F172A; }
+    .hero-desc { font-size: 1.05rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 1.5rem; }
+    
+    .badge-bar { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .pill { background: #F1F5F9; color: #475569; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 9999px; }
+    .pill-blue { background: #EFF6FF; color: #1D4ED8; }
+
+    /* 模板網格展示區 */
+    .catalog-section { max-width: 1400px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* 模板卡片 */
+    .tpl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+    .tpl-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+      border-color: #CBD5E1;
+    }
+
+    .tpl-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
+    .tpl-index { font-size: 0.75rem; font-weight: 700; color: var(--primary); background: #EFF6FF; padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+    .tpl-tag { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
+    .tag-mfg { background: #DCFCE7; color: #16A34A; }
+    .tag-data { background: #EEF2FF; color: #4F46E5; }
+    .tag-sec { background: #FEF3C7; color: #D97706; }
+    .tag-adm { background: #F1F5F9; color: #475569; }
+
+    .tpl-title { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; }
+    .tpl-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1; }
+
+    .tpl-meta {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+    .view-link { color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 頁尾 */
+    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); background: #FFFFFF; font-size: 0.85rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="hero-container">
+      <img src="assets/images/logo.png" alt="Company Logo" class="brand-logo-hero" onerror="this.src='images/main.png'">
+      <h1 class="hero-title">鴻海科技集團 · 內部企業級網站模板庫</h1>
+      <p class="hero-desc">
+        針對智慧製造（Smart Manufacturing）、工業物聯網（IoT）、巨量數據戰情（Big Data）與資訊安全合規（InfoSec Compliance）量身打造的 10+ 現代白極簡樣板，均為純 HTML+CSS+少量 JS，零外部套件依賴，開箱即用。
+      </p>
+      <div class="badge-bar">
+        <span class="pill pill-blue">風格：Clean & Minimalist 簡約白灰</span>
+        <span class="pill">零依賴 (Pure HTML & CSS)</span>
+        <span class="pill">支援 RWD 自適應</span>
+        <span class="pill">品牌 Logo & Favicon 規格整合</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 模板展覽清單 -->
+  <main class="catalog-section">
+    <div class="section-title">
+      <span>全系列 12 款模板快速入口 (含登入與通用儀表板)</span>
+      <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">點擊任一卡片即可開啟預覽</span>
+    </div>
+
+    <div class="template-grid">
+
+      <!-- 登入頁 -->
+      <a href="login.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">AUTH</span>
+            <span class="tpl-tag tag-adm">基礎入口</span>
+          </div>
+          <h2 class="tpl-title">系統登入驗證頁 (Login Portal)</h2>
+          <p class="tpl-desc">居中極簡白卡片排版、Logo 標誌、員工帳號/密碼輸入框、密碼明文切換、記住我與忘記密碼連結。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">檔案：login.html</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 基礎通用儀表板 -->
+      <a href="dashboard.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">ADMIN</span>
+            <span class="tpl-tag tag-adm">通用後台</span>
+          </div>
+          <h2 class="tpl-title">通用營運儀表板 (General Admin)</h2>
+          <p class="tpl-desc">完整左側邊欄導覽 (Sidebar)、頂部搜尋與鈴鐺 (Header)、4 張 KPI 統計卡片、權限申請數據表格與分頁。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">檔案：dashboard.html</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 1 -->
+      <a href="tpl-01-manufacturing-lines.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 01</span>
+            <span class="tpl-tag tag-mfg">智慧製造</span>
+          </div>
+          <h2 class="tpl-title">SMT 產線即時看板 (OEE & Production)</h2>
+          <p class="tpl-desc">高速 SMT/組裝產線監控、綜合設備效率 (OEE 89.4%)、工單達成進度條、一次直通率 (FPY) 與現場異常工位。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">現場車間大屏 / 看板</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 2 -->
+      <a href="tpl-02-equipment-iot.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 02</span>
+            <span class="tpl-tag tag-mfg">設備物聯網</span>
+          </div>
+          <h2 class="tpl-title">智慧設備保全與 IoT 邊緣監控 (TPM & PHM)</h2>
+          <p class="tpl-desc">CNC 機台、貼片機、機械手臂之主軸溫度、高頻震動 RMS、MTBF/MTTR 統計、設備剩餘壽命 (RUL) 預測保養。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">自動化處 / 設備保全</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 3 -->
+      <a href="tpl-03-quality-spc.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 03</span>
+            <span class="tpl-tag tag-mfg">品質管制</span>
+          </div>
+          <h2 class="tpl-title">品質工程與統計製程管制 (SPC & Quality)</h2>
+          <p class="tpl-desc">製程能力指數 Cpk、X-bar 尺寸管制界限 (UCL/CL/LCL)、Top 5 缺陷類型柏拉圖 (Pareto) 與 AOI 誤判過濾。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">品保工程 / 數位品質</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 4 -->
+      <a href="tpl-04-supply-chain.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 04</span>
+            <span class="tpl-tag tag-adm">運籌物流</span>
+          </div>
+          <h2 class="tpl-title">供應鏈物料與智慧倉儲戰情 (SCM & WMS)</h2>
+          <p class="tpl-desc">庫存週轉天數 (DOI)、AS/RS 立體庫容利用率、架位儲位矩陣視覺化、供應商準時到貨 (OTD) 與關鍵缺料警報。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">資材處 / 運籌管理</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 5 -->
+      <a href="tpl-05-esg-energy.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 05</span>
+            <span class="tpl-tag tag-mfg">綠色 ESG</span>
+          </div>
+          <h2 class="tpl-title">綠色製造與能耗碳中和看板 (ESG & Energy)</h2>
+          <p class="tpl-desc">溫室氣體碳排盤查 (tCO2e)、綠電使用佔比 (46.2%)、水循環率、屋頂分散式太陽能即時發電與廠房能耗等級評估。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">永續發展委員會 / 廠務</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 6 -->
+      <a href="tpl-06-ehs-safety.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 06</span>
+            <span class="tpl-tag tag-mfg">環安衛</span>
+          </div>
+          <h2 class="tpl-title">工廠環安衛與智慧門禁防護 (EHS & Security)</h2>
+          <p class="tpl-desc">連續零工傷安全天數 (1,428天)、AI 視覺偵測穿戴防護裝備 (PPE)、危險化學品濃度感測、門禁人臉與車牌放行紀錄。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">環安處 / 保全總隊</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 7 -->
+      <a href="tpl-07-bigdata-analytics.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 07</span>
+            <span class="tpl-tag tag-data">巨量大數據</span>
+          </div>
+          <h2 class="tpl-title">大數據中心與 AI 運算平台 (Big Data & AI)</h2>
+          <p class="tpl-desc">資料湖吞吐量 (48.6 TB/Day)、Kafka 延遲 (4.2ms)、NVIDIA H100 GPU 叢集負載、線上推論 QPS 與 ETL 串流作業。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">大數據處 / AI 實驗室</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 8 -->
+      <a href="tpl-08-infosec-compliance.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 08</span>
+            <span class="tpl-tag tag-sec">資安合規</span>
+          </div>
+          <h2 class="tpl-title">資訊安全與法規遵循稽核 (InfoSec & Audit)</h2>
+          <p class="tpl-desc">ISO 27001 / IEC 62443 工控安全合規態勢 (98.8%)、OT/IT 防火牆攔截威脅、零信任 MFA 驗證、PAM 特權跳板存取日誌。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">CESBG 資安處 / 稽核室</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 9 -->
+      <a href="tpl-09-mes-work-order.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 09</span>
+            <span class="tpl-tag tag-mfg">生產調度</span>
+          </div>
+          <h2 class="tpl-title">排程派工與在製品追蹤 (MES Scheduling & WIP)</h2>
+          <p class="tpl-desc">待投產、在製 WIP、完工檢驗三階段 Kanban 看板拖曳檢視、工單交期預警與現場班組生產派工清冊。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">生管處 (PC/MC) / 車間主管</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 模板 10 -->
+      <a href="tpl-10-executive-kpi.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">TPL 10</span>
+            <span class="tpl-tag tag-adm">決策戰情</span>
+          </div>
+          <h2 class="tpl-title">集團高階主管經營戰情室 (Executive Cockpit)</h2>
+          <p class="tpl-desc">合併營收 (NT$ 1.62兆)、毛利率趨勢、全球製造園區產能稼動調度、3+3 新事業成長率與重大投資專案待簽核清冊。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">總裁室 / 總經理室 / 董事會</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 鴻海科技集團 (Hon Hai Technology Group / Foxconn). 內部系統 UI 模板規格庫 · 僅供同仁開發與展示參考。
+  </footer>
+
+</body>
+</html>

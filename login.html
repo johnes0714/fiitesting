@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系統登入 | 企業內部管理系統</title>
+  
+  <!-- Favicon 設定 -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+  <!-- 現代無襯線字型 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* 全域 CSS 變數 - 極簡白與細緻灰階設計系統 */
+    :root {
+      --bg-body: #F8FAFC;           /* 頁面極淺灰底色 */
+      --bg-card: #FFFFFF;           /* 卡片純白背景 */
+      --text-main: #0F172A;         /* 主要深灰文字 */
+      --text-muted: #64748B;        /* 次要輔助文字 */
+      --border-color: #E2E8F0;      /* 細緻邊框灰 */
+      --border-focus: #2563EB;      /* 輸入聚焦藍 */
+      --primary: #2563EB;           /* 主要動作藍色 */
+      --primary-hover: #1D4ED8;     /* 按鈕 Hover 顏色 */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --radius-md: 12px;
+      --radius-sm: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    /* 登入外層容器 */
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* 登入主卡片 */
+    .login-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 2.5rem 2rem;
+    }
+
+    /* 品牌 Logo 與標題區 */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-logo {
+      height: 48px;
+      max-width: 180px;
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 1.25rem;
+      display: inline-block;
+    }
+
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* 表單元件排版 */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 0.875rem;
+      font-size: 0.925rem;
+      color: var(--text-main);
+      background-color: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .form-input::placeholder {
+      color: #94A3B8;
+    }
+
+    .toggle-pwd {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0.25rem;
+    }
+
+    /* 記住我與忘記密碼水平列 */
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .remember-me input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+      color: var(--primary-hover);
+    }
+
+    /* 登入送出按鈕 */
+    .btn-submit {
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease, transform 0.05s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    /* 頁尾版權告示 */
+    .login-footer {
+      text-align: center;
+      margin-top: 1.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      
+      <!-- 品牌標誌與標題 -->
+      <div class="brand-header">
+        <img src="assets/images/logo.png" alt="Company Logo" class="brand-logo" onerror="this.onerror=null; this.src='images/main.png';">
+        <h1 class="brand-title">內部系統登入</h1>
+        <p class="brand-subtitle">請輸入企業同仁帳號以存取內部資源</p>
+      </div>
+
+      <!-- 登入表單：送出直接前往儀表板 -->
+      <form action="dashboard.html" method="GET" id="loginForm">
+        <!-- 帳號輸入框 -->
+        <div class="form-group">
+          <label for="username" class="form-label">員工帳號 / Email</label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="form-input" 
+              placeholder="user@company.internal" 
+              value="admin@company.internal"
+              required
+              autocomplete="username"
+            >
+          </div>
+        </div>
+
+        <!-- 密碼輸入框 -->
+        <div class="form-group">
+          <label for="password" class="form-label">密碼</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="••••••••" 
+              value="password123"
+              required
+              autocomplete="current-password"
+            >
+            <button type="button" class="toggle-pwd" id="togglePwd" title="顯示或隱藏密碼">顯示</button>
+          </div>
+        </div>
+
+        <!-- 記住我與忘記密碼 -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" name="remember" checked>
+            <span>記住帳號</span>
+          </label>
+          <a href="#" class="forgot-link" onclick="alert('請聯繫 IT 服務台 (分機 #8888) 協助重設密碼。'); return false;">忘記密碼？</a>
+        </div>
+
+        <!-- 登入按鈕 -->
+        <button type="submit" class="btn-submit">進入系統</button>
+      </form>
+
+    </div>
+
+    <!-- 頁尾宣告 -->
+    <div class="login-footer">
+      &copy; 2026 Enterprise Corp. All rights reserved. 僅供內部授權同仁存取。
+    </div>
+  </div>
+
+  <script>
+    // 密碼顯示/隱藏切換
+    const togglePwd = document.getElementById('togglePwd');
+    const pwdInput = document.getElementById('password');
+    if (togglePwd && pwdInput) {
+      togglePwd.addEventListener('click', () => {
+        const isPassword = pwdInput.type === 'password';
+        pwdInput.type = isPassword ? 'text' : 'password';
+        togglePwd.textContent = isPassword ? '隱藏' : '顯示';
+      });
+    }
+  </script>
+
+</body>
+</html>

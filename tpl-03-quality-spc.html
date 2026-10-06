@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>品質工程與統計製程管制 (SPC & Quality) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    /* 圖表與分析雙欄佈局 */
+    .grid-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+
+    /* SPC 控制圖純 CSS 模擬圖示 */
+    .spc-chart-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      background: #FFFFFF;
+      position: relative;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .spc-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      border-top: 1px dashed #CBD5E1;
+      padding-top: 2px;
+    }
+    .spc-ucl { border-color: #DC2626; color: #DC2626; }
+    .spc-cl { border-color: #2563EB; color: #2563EB; border-style: solid; }
+    .spc-lcl { border-color: #DC2626; color: #DC2626; }
+
+    /* 模擬折線點分佈 */
+    .spc-points {
+      position: absolute;
+      top: 30px;
+      left: 60px;
+      right: 60px;
+      bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .data-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2563EB;
+      box-shadow: 0 0 0 2px #FFFFFF;
+      position: relative;
+    }
+
+    /* 柏拉圖 (Pareto) 缺陷長條圖 */
+    .pareto-bar-row { margin-bottom: 0.85rem; }
+    .pareto-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .pareto-track { height: 12px; background: #F1F5F9; border-radius: 9999px; overflow: hidden; }
+    .pareto-fill { height: 100%; border-radius: 9999px; }
+
+    /* 表格 */
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">品質保證與統計製程管制 (QA & SPC) | 數位品質處</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">品質工程戰情室 (SPC, Cpk & AOI 檢測)</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">監控焊膏印刷 (SPI)、自動光學檢驗 (AOI) 與功能測試 (FCT) 之製程能力指數</p>
+      </div>
+      <div>
+        <button style="background: #FFFFFF; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">生成 8D 品質報告</button>
+      </div>
+    </div>
+
+    <!-- 4 大品質指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">製程能力指數 (Cpk)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">1.68</div>
+        <div style="font-size: 0.8rem; color: #16A34A;">● 等級 A+ (目標值 &ge; 1.67)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">出貨綜合良率 (Ship Yield)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">99.82%</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">測試總數：124,500 pcs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">不良率 (Defect PPM)</div>
+        <div class="kpi-val mono">180 <span style="font-size: 0.9rem; font-weight: 500;">PPM</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▼ 較上月下降 22 PPM</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">AOI 誤判率 (False Call Rate)</div>
+        <div class="kpi-val mono" style="color: #2563EB;">0.35%</div>
+        <div style="font-size: 0.8rem; color: #2563EB;">AI 模型複判過濾中</div>
+      </div>
+    </div>
+
+    <!-- SPC 管制圖與柏拉圖 -->
+    <div class="grid-2">
+      <!-- SPC X-Bar 管制圖 -->
+      <div class="card">
+        <div class="card-title">
+          <span>X-bar 關鍵尺寸管制限分析 (Critical Dimension SPC)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">抽樣件數: n=5</span>
+        </div>
+        <div class="spc-chart-box">
+          <div class="spc-line spc-ucl">
+            <span>UCL (上管制界限)</span>
+            <span>12.520 mm</span>
+          </div>
+          <div class="spc-points">
+            <div class="data-dot" style="margin-top: -10px;"></div>
+            <div class="data-dot" style="margin-top: 15px;"></div>
+            <div class="data-dot" style="margin-top: 5px;"></div>
+            <div class="data-dot" style="margin-top: -20px;"></div>
+            <div class="data-dot" style="margin-top: -5px;"></div>
+            <div class="data-dot" style="margin-top: 20px;"></div>
+            <div class="data-dot" style="margin-top: 0px;"></div>
+            <div class="data-dot" style="margin-top: -12px;"></div>
+            <div class="data-dot" style="margin-top: 8px;"></div>
+          </div>
+          <div class="spc-line spc-cl">
+            <span>CL (中心目標線 Target)</span>
+            <span>12.500 mm</span>
+          </div>
+          <div class="spc-line spc-lcl">
+            <span>LCL (下管制界限)</span>
+            <span>12.480 mm</span>
+          </div>
+        </div>
+        <div style="font-size: 0.8rem; color: #16A34A; margin-top: 0.75rem;">
+          ✔ 連續 25 組樣本無異常趨勢，製程處於統計受控狀態 (In Statistical Control)。
+        </div>
+      </div>
+
+      <!-- 不良項目柏拉圖 (Pareto) -->
+      <div class="card">
+        <div class="card-title">
+          <span>Top 5 缺陷類型分佈 (Defect Pareto)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">本日累計</span>
+        </div>
+        
+        <div class="pareto-bar-row">
+          <div class="pareto-info">
+            <span>1. 錫膏少錫 / 空焊 (Insufficient Solder)</span>
+            <span class="mono"><b>42%</b> (130 pcs)</span>
+          </div>
+          <div class="pareto-track">
+            <div class="pareto-fill" style="width: 42%; background: #EF4444;"></div>
+          </div>
+        </div>
+
+        <div class="pareto-bar-row">
+          <div class="pareto-info">
+            <span>2. 元件偏位 / 旋轉 (Misalignment)</span>
+            <span class="mono"><b>26%</b> (80 pcs)</span>
+          </div>
+          <div class="pareto-track">
+            <div class="pareto-fill" style="width: 26%; background: #F97316;"></div>
+          </div>
+        </div>
+
+        <div class="pareto-bar-row">
+          <div class="pareto-info">
+            <span>3. 錫橋短路 (Solder Bridging)</span>
+            <span class="mono"><b>18%</b> (56 pcs)</span>
+          </div>
+          <div class="pareto-track">
+            <div class="pareto-fill" style="width: 18%; background: #FBBF24;"></div>
+          </div>
+        </div>
+
+        <div class="pareto-bar-row">
+          <div class="pareto-info">
+            <span>4. 墓碑效應 / 立碑 (Tombstoning)</span>
+            <span class="mono"><b>9%</b> (28 pcs)</span>
+          </div>
+          <div class="pareto-track">
+            <div class="pareto-fill" style="width: 9%; background: #60A5FA;"></div>
+          </div>
+        </div>
+
+        <div class="pareto-bar-row">
+          <div class="pareto-info">
+            <span>5. 缺件漏裝 (Missing Component)</span>
+            <span class="mono"><b>5%</b> (15 pcs)</span>
+          </div>
+          <div class="pareto-track">
+            <div class="pareto-fill" style="width: 5%; background: #94A3B8;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 檢測工位良率明細表格 -->
+    <div class="card">
+      <div class="card-title">各測試檢驗站點即時直通率 (Station Yield Details)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>檢測站代碼</th>
+            <th>工位名稱</th>
+            <th>投入數 (In)</th>
+            <th>合格數 (Pass)</th>
+            <th>不良數 (NG)</th>
+            <th>一次直通率 (FPY)</th>
+            <th>狀態判定</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">ST-SPI-01</td>
+            <td>3D 錫膏厚度檢測 (SPI)</td>
+            <td class="mono">15,000</td>
+            <td class="mono">14,942</td>
+            <td class="mono">58</td>
+            <td class="mono" style="font-weight:700; color:#16A34A;">99.61%</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">優良</span></td>
+          </tr>
+          <tr>
+            <td class="mono">ST-AOI-02</td>
+            <td>爐前光學檢查 (Pre-Reflow AOI)</td>
+            <td class="mono">14,942</td>
+            <td class="mono">14,910</td>
+            <td class="mono">32</td>
+            <td class="mono" style="font-weight:700; color:#16A34A;">99.78%</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">優良</span></td>
+          </tr>
+          <tr>
+            <td class="mono">ST-AOI-03</td>
+            <td>爐後 3D AOI (Post-Reflow AOI)</td>
+            <td class="mono">14,910</td>
+            <td class="mono">14,792</td>
+            <td class="mono">118</td>
+            <td class="mono" style="font-weight:700; color:#2563EB;">99.20%</td>
+            <td><span style="color:#2563EB; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">正常</span></td>
+          </tr>
+          <tr>
+            <td class="mono">ST-FCT-04</td>
+            <td>高頻射頻綜合功能測試 (RF FCT)</td>
+            <td class="mono">14,792</td>
+            <td class="mono">14,732</td>
+            <td class="mono">60</td>
+            <td class="mono" style="font-weight:700; color:#16A34A;">99.59%</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">優良</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

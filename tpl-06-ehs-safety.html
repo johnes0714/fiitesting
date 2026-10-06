@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工廠環安衛與智慧門禁防護 (EHS & Security) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    .grid-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; }
+
+    /* AI 影像防護識別模擬方塊 */
+    .cctv-box {
+      background: #0F172A;
+      color: #FFFFFF;
+      height: 220px;
+      border-radius: 6px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+      overflow: hidden;
+    }
+    .cctv-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+    .cctv-bbox {
+      position: absolute;
+      top: 50px;
+      left: 35%;
+      width: 120px;
+      height: 120px;
+      border: 2px solid #16A34A;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(22, 163, 74, 0.4);
+    }
+    .cctv-label {
+      position: absolute;
+      top: -22px;
+      left: 0;
+      background: #16A34A;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">環境安全衛生與安防應變 (EHS & Security) | 廠務環安處</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">廠區智慧安防與零工傷安全戰情看板</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">符合 ISO 45001 職業安全衛生、AI 穿戴防護裝備 (PPE) 辨識與毒化物氣體監控</p>
+      </div>
+      <div>
+        <button style="background: #FFFFFF; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">全廠安防緊急廣播</button>
+      </div>
+    </div>
+
+    <!-- 4 大指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">連續零失能工傷安全天數</div>
+        <div class="kpi-val mono" style="color: #16A34A;">1,428 <span style="font-size: 0.9rem; font-weight: 500;">天</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">● 突破百萬安全工時目標</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">目前在廠總人數 (On-Site)</div>
+        <div class="kpi-val mono">3,852 <span style="font-size: 0.9rem; font-weight: 500;">人</span></div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">員工 3,420 / 訪客 82 / 廠商 350</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">AI PPE 防護裝備遵從率</div>
+        <div class="kpi-val mono" style="color: #16A34A;">99.8%</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">安全帽、靜電衣、護目鏡合規</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">化學品氣體與消防水壓</div>
+        <div class="kpi-val mono" style="color: #16A34A;">NORMAL</div>
+        <div style="font-size: 0.8rem; color: #16A34A;">128 個感測節點無洩漏</div>
+      </div>
+    </div>
+
+    <!-- AI 影像識別與危化物監控 -->
+    <div class="grid-2">
+      <!-- AI 門禁影像視覺監控 -->
+      <div class="card">
+        <div class="card-title">
+          <span>無塵室車間管制站 AI 視覺防護辨識 (AI PPE Vision)</span>
+          <span style="font-size: 0.8rem; color: #16A34A;">● LIVE 串流中</span>
+        </div>
+        <div class="cctv-box">
+          <div class="cctv-tag">CAM-GATE-04 [無塵更衣閘門]</div>
+          <div class="cctv-bbox">
+            <div class="cctv-label">✔ 靜電衣 & 髮帽合格 (99.4%)</div>
+          </div>
+          <div style="font-size: 0.75rem; color: #94A3B8; z-index: 10;">
+            人臉辨識: 李O明 (工號: FOX-8842) - 門禁自動放行
+          </div>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem;">
+          邊緣運算晶片即時檢測每位同仁靜電鞋阻抗 (ESD Test) 與空氣浴塵室 (Air Shower) 吹淋秒數。
+        </div>
+      </div>
+
+      <!-- 環境監控感測矩陣 -->
+      <div class="card">
+        <div class="card-title">
+          <span>廠區危險化學品庫與氣瓶間實時指標</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">更新週期: 5s</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">揮發性有機物 (VOC)</div>
+            <div class="mono" style="font-size:1.3rem; font-weight:700; color:#16A34A; margin-top:3px;">0.02 ppm</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">安全標準: &lt; 1.0 ppm</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">消防主幹管水壓</div>
+            <div class="mono" style="font-size:1.3rem; font-weight:700; color:#16A34A; margin-top:3px;">0.85 MPa</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">標準範圍: 0.7 ~ 1.0 MPa</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">特氣排風負壓</div>
+            <div class="mono" style="font-size:1.3rem; font-weight:700; color:#16A34A; margin-top:3px;">-120 Pa</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">抽風機運作正常</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">防爆配電盤溫度</div>
+            <div class="mono" style="font-size:1.3rem; font-weight:700; color:#16A34A; margin-top:3px;">28.4 °C</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">無過熱點</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 近期出入與安防紀錄表格 -->
+    <div class="card">
+      <div class="card-title">主要廠門大門即時人員與車輛通行紀錄 (Access Control Logs)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>通行時間</th>
+            <th>姓名 / 車號</th>
+            <th>人員類別</th>
+            <th>通行通道門禁</th>
+            <th>測溫 / 阻抗檢測</th>
+            <th>放行狀態</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">11:32:05</td>
+            <td>陳工程師 (FOX-1029)</td>
+            <td>內部同仁</td>
+            <td>A 棟南側員工閘門</td>
+            <td>36.4°C / 7.8MΩ (通過)</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">核准通行</span></td>
+          </tr>
+          <tr>
+            <td class="mono">11:30:42</td>
+            <td>車號: ABC-8899 (物流貨車)</td>
+            <td>外包配送商</td>
+            <td>西側貨檢閘門</td>
+            <td>車底自動掃描正常</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">核准通行</span></td>
+          </tr>
+          <tr>
+            <td class="mono">11:28:10</td>
+            <td>王專員 (VISITOR-042)</td>
+            <td>外部訪客 (客戶審查)</td>
+            <td>總部大廳櫃檯門禁</td>
+            <td>已由 EHS 專員陪同簽核</td>
+            <td><span style="color:#2563EB; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">臨時卡已啟用</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

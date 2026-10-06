@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生產排程派工與工單追蹤 (MES Scheduling & WIP) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    /* 看板 (Kanban) 排程佈局 */
+    .kanban-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
+    .kanban-col { background: #F1F5F9; border-radius: var(--radius); padding: 1rem; }
+    .col-title { font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+    .col-badge { background: #E2E8F0; padding: 2px 8px; border-radius: 9999px; font-size: 0.75rem; }
+
+    .wo-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .wo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.06); }
+    .wo-num { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 0.35rem; }
+    .wo-desc { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .wo-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">精實生產調度與工單派工 (MES Work Orders & WIP)</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">智慧派工看板與在製品 (WIP) 進度追蹤</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">自動串接 SAP 工單、生產線平衡率 (Line Balancing) 與派工即時交期評估</p>
+      </div>
+      <div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">+ 建立緊急插單工單</button>
+      </div>
+    </div>
+
+    <!-- 關鍵指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">今日計劃開工工單總數</div>
+        <div class="kpi-val mono">28 <span style="font-size: 0.9rem; font-weight: 500;">單</span></div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">今日計劃產量：120,000 pcs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">目前在製工單 (WIP Active)</div>
+        <div class="kpi-val mono" style="color: #2563EB;">18 <span style="font-size: 0.9rem; font-weight: 500;">單</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">● 產線稼動飽和率 94%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">已完工入庫 (Completed)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">9 <span style="font-size: 0.9rem; font-weight: 500;">單</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">入庫檢驗 (FQC) 均合格</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">交期風險預警 (Delayed Risk)</div>
+        <div class="kpi-val mono" style="color: #D97706;">1 <span style="font-size: 0.9rem; font-weight: 500;">單</span></div>
+        <div style="font-size: 0.8rem; color: #D97706;">因料件更換預計延遲 15 分鐘</div>
+      </div>
+    </div>
+
+    <!-- 工單看板流 (Kanban Board) -->
+    <div class="kanban-grid">
+      <!-- 準備投產 -->
+      <div class="kanban-col">
+        <div class="col-title">
+          <span>待投產準備 (Ready to Run)</span>
+          <span class="col-badge mono">3 單</span>
+        </div>
+        
+        <div class="wo-card">
+          <div class="wo-num mono">#WO-2610-09</div>
+          <div class="wo-desc">Flagship Phone Rear Camera Module</div>
+          <div class="wo-meta">
+            <span>預計投入: 8,000 pcs</span>
+            <span>SMT-Line 04</span>
+          </div>
+        </div>
+
+        <div class="wo-card">
+          <div class="wo-num mono">#WO-2610-10</div>
+          <div class="wo-desc">Smart Home Wireless Hub v2</div>
+          <div class="wo-meta">
+            <span>預計投入: 3,500 pcs</span>
+            <span>SMT-Line 06</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 進行中 WIP -->
+      <div class="kanban-col">
+        <div class="col-title">
+          <span>在製品生產中 (WIP Processing)</span>
+          <span class="col-badge mono" style="background:#DBEAFE; color:#1E40AF;">18 單</span>
+        </div>
+
+        <div class="wo-card" style="border-left: 4px solid #2563EB;">
+          <div class="wo-num mono">#WO-2610-01</div>
+          <div class="wo-desc">A-Series Main Motherboard Rev.4</div>
+          <div style="margin: 0.4rem 0;">
+            <div style="height: 6px; background: #E2E8F0; border-radius: 9999px; overflow: hidden;">
+              <div style="width: 94%; height: 100%; background: #16A34A;"></div>
+            </div>
+          </div>
+          <div class="wo-meta">
+            <span>已達: 4,700 / 5,000 pcs (94%)</span>
+            <span style="color:#16A34A; font-weight:600;">進度超前</span>
+          </div>
+        </div>
+
+        <div class="wo-card" style="border-left: 4px solid #D97706;">
+          <div class="wo-num mono">#WO-2610-03</div>
+          <div class="wo-desc">Ultra-Slim Power IC Flex Board</div>
+          <div style="margin: 0.4rem 0;">
+            <div style="height: 6px; background: #E2E8F0; border-radius: 9999px; overflow: hidden;">
+              <div style="width: 45%; height: 100%; background: #D97706;"></div>
+            </div>
+          </div>
+          <div class="wo-meta">
+            <span>已達: 1,350 / 3,000 pcs (45%)</span>
+            <span style="color:#D97706; font-weight:600;">備料調校中</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 完工檢驗中 -->
+      <div class="kanban-col">
+        <div class="col-title">
+          <span>測試完工入庫 (Final Quality & FGS)</span>
+          <span class="col-badge mono" style="background:#DCFCE7; color:#15803D;">9 單</span>
+        </div>
+
+        <div class="wo-card" style="border-left: 4px solid #16A34A;">
+          <div class="wo-num mono">#WO-2610-00</div>
+          <div class="wo-desc">Server High-Speed Backplane</div>
+          <div class="wo-meta">
+            <span>完工數: 2,000 pcs</span>
+            <span>入立體庫 A 區</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 即時派工明細表格 -->
+    <div class="card">
+      <div style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">現場班組生產派工清冊 (Production Dispatch Table)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>工單編號</th>
+            <th>產品品名規格</th>
+            <th>指定產線</th>
+            <th>發放數量</th>
+            <th>完成數量</th>
+            <th>班組長</th>
+            <th>預估完工交付</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-weight:600;">#WO-2610-01</td>
+            <td>A-Series Main Motherboard Rev.4</td>
+            <td>SMT-01</td>
+            <td class="mono">5,000</td>
+            <td class="mono" style="color:#16A34A; font-weight:600;">4,700 (94%)</td>
+            <td>陳組長 (甲班)</td>
+            <td class="mono">今日 12:15</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-weight:600;">#WO-2610-02</td>
+            <td>Optical Sensor Array v2</td>
+            <td>SMT-02</td>
+            <td class="mono">5,000</td>
+            <td class="mono" style="color:#2563EB; font-weight:600;">4,100 (82%)</td>
+            <td>林組長 (甲班)</td>
+            <td class="mono">今日 13:40</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

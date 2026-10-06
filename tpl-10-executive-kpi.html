@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>集團高階主管經營戰情室 (Executive Cockpit) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #0F172A; /* 高階深邃黑白商務風 */
+      --accent: #2563EB;
+      --success: #16A34A;
+      --warning: #D97706;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    .grid-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; }
+
+    /* 全球產能長條 */
+    .plant-row { margin-bottom: 0.85rem; }
+    .plant-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .plant-track { height: 8px; background: #E2E8F0; border-radius: 9999px; overflow: hidden; }
+    .plant-fill { height: 100%; border-radius: 9999px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">集團決策與營運績效戰情室 (Executive Cockpit)</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">事業群綜合營運績效與「3+3」轉型進度</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">整合全球製造基地營收、毛利目標、全球產能調度與重大資本支出 (CapEx)</p>
+      </div>
+      <div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">董事會季報簡報檢視</button>
+      </div>
+    </div>
+
+    <!-- 4 大高階營運指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">本季累計集團合併營收</div>
+        <div class="kpi-val mono">NT$ 1.62 <span style="font-size: 0.9rem; font-weight: 500;">兆元</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▲ 年增率 YoY +14.6%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">毛利率表現 (Gross Margin)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">6.85%</div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▲ 目標向 7.0% 邁進</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">3+3 新事業營收佔比</div>
+        <div class="kpi-val mono" style="color: #2563EB;">21.4%</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">電動車、AI 伺服器、機器人高速增長</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">全球整體產能稼動率</div>
+        <div class="kpi-val mono">91.2%</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">訂單能見度維持 6 個月</div>
+      </div>
+    </div>
+
+    <!-- 全球主要製造基地產能分佈 -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">
+          <span>全球主要科技園區產能稼動現況 (Global Manufacturing Plants)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">共 132 條高階產線</span>
+        </div>
+        
+        <div class="plant-row">
+          <div class="plant-info">
+            <span>深圳龍華 / 觀瀾園區 (高階智慧終端 & 模具中心)</span>
+            <span class="mono"><b>96%</b> (滿載運轉)</span>
+          </div>
+          <div class="plant-track">
+            <div class="plant-fill" style="width: 96%; background: #16A34A;"></div>
+          </div>
+        </div>
+
+        <div class="plant-row">
+          <div class="plant-info">
+            <span>鄭州航空港科技園區 (旗艦智慧手機主力基地)</span>
+            <span class="mono"><b>94%</b> (旺季備貨中)</span>
+          </div>
+          <div class="plant-track">
+            <div class="plant-fill" style="width: 94%; background: #16A34A;"></div>
+          </div>
+        </div>
+
+        <div class="plant-row">
+          <div class="plant-info">
+            <span>印度清奈 / 班加羅爾園區 (南亞次大陸擴產基地)</span>
+            <span class="mono"><b>88%</b> (良率持續攀升)</span>
+          </div>
+          <div class="plant-track">
+            <div class="plant-fill" style="width: 88%; background: #2563EB;"></div>
+          </div>
+        </div>
+
+        <div class="plant-row">
+          <div class="plant-info">
+            <span>墨西哥 / 美國俄亥俄園區 (北美 AI 伺服器與電動車)</span>
+            <span class="mono"><b>82%</b> (新架構伺服器交貨)</span>
+          </div>
+          <div class="plant-track">
+            <div class="plant-fill" style="width: 82%; background: #2563EB;"></div>
+          </div>
+        </div>
+
+        <div class="plant-row">
+          <div class="plant-info">
+            <span>越南北江 / 廣寧園區 (網通與智慧穿戴)</span>
+            <span class="mono"><b>91%</b> (穩健量產)</span>
+          </div>
+          <div class="plant-track">
+            <div class="plant-fill" style="width: 91%; background: #16A34A;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 高階待簽核公文案件 -->
+      <div class="card">
+        <div class="card-title">
+          <span>待總裁室 / 總經理核定之重大專案 (Pending Approvals)</span>
+          <span style="font-size: 0.8rem; color: #D97706;">3 件待審</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>專案公文主旨</th>
+              <th>提案事業群</th>
+              <th>投資金額</th>
+              <th>審核狀態</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">北美新世代液冷 AI 伺服器擴廠案</td>
+              <td>CESBG / 雲運算</td>
+              <td class="mono">US$ 1.2 億</td>
+              <td><span style="color:#D97706; background:#FEF3C7; padding:2px 8px; border-radius:4px; font-size:0.75rem;">財務複審通過</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">歐洲電動車次系統合資合約修訂</td>
+              <td>EV 事業群</td>
+              <td class="mono">EUR 4,500 萬</td>
+              <td><span style="color:#2563EB; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.75rem;">法務合規審閱中</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">龍華自動化無人工廠 (燈塔工廠) 升級</td>
+              <td>自動化機器人</td>
+              <td class="mono">NT$ 8.5 億</td>
+              <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem;">待總裁用印</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

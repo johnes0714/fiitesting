@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大數據中心與 AI 運算平台 (Big Data & AI Ops) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #4F46E5; /* 科技紫藍色 */
+      --primary-light: #EEF2FF;
+      --success: #16A34A;
+      --warning: #D97706;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; }
+
+    /* 叢集節點負載長條 */
+    .cluster-bar { margin-bottom: 0.85rem; }
+    .cluster-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; }
+    .cluster-track { height: 8px; background: #E2E8F0; border-radius: 9999px; overflow: hidden; }
+    .cluster-fill { height: 100%; border-radius: 9999px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">巨量資料湖與人工智慧運算中心 (Data Lake & MLOps)</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">工業大數據串流與 AI 推論叢集監控</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">實時處理全集團 40+ 園區 IoT 感測串流 (Apache Kafka, Spark & Kubernetes GPU Cluster)</p>
+      </div>
+      <div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">部署新 AI 模型端點</button>
+      </div>
+    </div>
+
+    <!-- 4 大大數據指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">每日數據吞吐入庫量</div>
+        <div class="kpi-val mono">48.6 <span style="font-size: 0.9rem; font-weight: 500;">TB / Day</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▲ 峰值 1.25 GB/s</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Kafka 訊息延遲 (Consumer Lag)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">4.2 <span style="font-size: 0.9rem; font-weight: 500;">ms</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">● 近乎零延遲串流注入</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">AI 推論服務目前 QPS</div>
+        <div class="kpi-val mono" style="color: #4F46E5;">14,280 <span style="font-size: 0.9rem; font-weight: 500;">req/s</span></div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">AOI 圖像與產線參數預測</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">GPU 運算節點叢集負載</div>
+        <div class="kpi-val mono">78.5%</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">64 顆 NVIDIA H100 運作中</div>
+      </div>
+    </div>
+
+    <!-- 運算節點與即時模型狀態 -->
+    <div class="grid-2">
+      <!-- GPU 運算伺服器負載 -->
+      <div class="card">
+        <div class="card-title">
+          <span>AI 算力叢集節點 (Kubernetes GPU Nodes)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">共 8 台 HGX 主機</span>
+        </div>
+        
+        <div class="cluster-bar">
+          <div class="cluster-info">
+            <span>Node-01 [H100-SXM-80GB x8] - LLM 設備知識庫</span>
+            <span class="mono"><b>88%</b> (68°C)</span>
+          </div>
+          <div class="cluster-track">
+            <div class="cluster-fill" style="width: 88%; background: #4F46E5;"></div>
+          </div>
+        </div>
+
+        <div class="cluster-bar">
+          <div class="cluster-info">
+            <span>Node-02 [H100-SXM-80GB x8] - AOI 缺陷分割辨識</span>
+            <span class="mono"><b>94%</b> (72°C)</span>
+          </div>
+          <div class="cluster-track">
+            <div class="cluster-fill" style="width: 94%; background: #0284C7;"></div>
+          </div>
+        </div>
+
+        <div class="cluster-bar">
+          <div class="cluster-info">
+            <span>Node-03 [A100-80GB x8] - 智慧排程遺傳演算法優化</span>
+            <span class="mono"><b>65%</b> (58°C)</span>
+          </div>
+          <div class="cluster-track">
+            <div class="cluster-fill" style="width: 65%; background: #16A34A;"></div>
+          </div>
+        </div>
+
+        <div class="cluster-bar">
+          <div class="cluster-info">
+            <span>Node-04 [A100-80GB x8] - 備料風險時間序列預測</span>
+            <span class="mono"><b>42%</b> (52°C)</span>
+          </div>
+          <div class="cluster-track">
+            <div class="cluster-fill" style="width: 42%; background: #10B981;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 線上推論模型排行榜 -->
+      <div class="card">
+        <div class="card-title">
+          <span>線上模型版本與準確率 (Active Production Models)</span>
+          <span style="font-size: 0.8rem; color: #16A34A;">● 全部端點健康</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>模型名稱</th>
+              <th>架構與版本</th>
+              <th>精準度 (F1)</th>
+              <th>P99 延遲</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">AOI-Defect-YOLOv10</td>
+              <td>Vision Transformer / v3.2</td>
+              <td class="mono" style="color:#16A34A; font-weight:700;">99.2%</td>
+              <td class="mono">12 ms</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">CNC-Spindle-RUL</td>
+              <td>LSTM TimeSeries / v1.8</td>
+              <td class="mono" style="color:#16A34A; font-weight:700;">96.8%</td>
+              <td class="mono">8 ms</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">Power-Peak-Forecast</td>
+              <td>LightGBM / v2.1</td>
+              <td class="mono" style="color:#16A34A; font-weight:700;">98.1%</td>
+              <td class="mono">5 ms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ETL 即時管線清單 -->
+    <div class="card">
+      <div class="card-title">大數據 ETL 資料管線作業狀態 (Data Pipelines & CDC)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>管線識別碼 (Pipeline ID)</th>
+            <th>資料來源 (Source)</th>
+            <th>目標資料倉儲 (Destination)</th>
+            <th>每秒處理紀錄 (RPS)</th>
+            <th>執行狀態</th>
+            <th>最後檢查點 (Checkpoint)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-weight:600;">#ETL-SMT-IOT-STREAM</td>
+            <td>MQTT Broker (產線感測器)</td>
+            <td>Apache Iceberg / ClickHouse</td>
+            <td class="mono">250,000 rec/s</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">即時串流中</span></td>
+            <td class="mono">11:34:02 (0s 前)</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-weight:600;">#ETL-SAP-ERP-BATCH</td>
+            <td>SAP S/4HANA (工單與庫存)</td>
+            <td>Snowflake Data Lakehouse</td>
+            <td class="mono">15,000 rec/s</td>
+            <td><span style="color:#2563EB; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">每 15 分鐘定時同步</span></td>
+            <td class="mono">11:30:00 (4m 前)</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-weight:600;">#ETL-AOI-IMAGES</td>
+            <td>高速工業相機 NAS 儲存</td>
+            <td>Ceph S3 物件儲存池</td>
+            <td class="mono">1,200 img/s</td>
+            <td><span style="color:#16A34A; background:#DCFCE7; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">連續上傳中</span></td>
+            <td class="mono">11:34:01 (1s 前)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

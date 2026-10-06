@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧設備保全與 IoT 邊緣監控 (TPM & PHM) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    /* 機台卡片 Grid */
+    .machine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; }
+    .machine-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .m-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .m-name { font-weight: 700; font-size: 1rem; }
+    .m-badge { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .badge-good { background: #DCFCE7; color: #16A34A; }
+    .badge-warn { background: #FEF3C7; color: #D97706; }
+
+    .sensor-readings { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .sensor-box { background: #F8FAFC; border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; }
+    .sensor-name { font-size: 0.75rem; color: var(--text-muted); }
+    .sensor-val { font-size: 1.2rem; font-weight: 700; margin-top: 2px; }
+
+    .health-gauge { margin-top: 0.5rem; }
+    .gauge-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; color: var(--text-muted); }
+    .gauge-bar { height: 8px; background: #E2E8F0; border-radius: 9999px; overflow: hidden; }
+    .gauge-fill { height: 100%; border-radius: 9999px; }
+
+    /* 保全警報與工單紀錄 */
+    .split-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; }
+    .panel { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; }
+    .panel-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.65rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+
+    .alert-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">精密設備健康管理 (PHM & IoT) | 自動化技術處</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">設備總合效率 (TPM) 與預測性保全中心</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">實時採集 CNC、貼片機、回焊爐與機械手臂感測器 (高頻震動、溫度、氣壓)</p>
+      </div>
+      <div>
+        <button style="background: #FFFFFF; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">匯出 TPM 報表</button>
+      </div>
+    </div>
+
+    <!-- 關鍵指標 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">線上連網機台數</div>
+        <div class="kpi-val mono">384 <span style="font-size: 0.9rem; color: var(--text-muted);">/ 390 台</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">● 聯網妥善率 98.4%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">平均故障間隔 (MTBF)</div>
+        <div class="kpi-val mono" style="color: #16A34A;">724 <span style="font-size: 0.9rem; font-weight: 500;">小時</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▲ 優於目標值 (650h)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">平均修復時間 (MTTR)</div>
+        <div class="kpi-val mono">28 <span style="font-size: 0.9rem; font-weight: 500;">分鐘</span></div>
+        <div style="font-size: 0.8rem; color: #16A34A;">▼ 較上季縮短 12%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">預測保全警報 (PHM Alerts)</div>
+        <div class="kpi-val mono" style="color: #D97706;">3 <span style="font-size: 0.9rem; font-weight: 500;">件待檢</span></div>
+        <div style="font-size: 0.8rem; color: #D97706;">主軸微震動特徵異常</div>
+      </div>
+    </div>
+
+    <!-- 關鍵設備即時監控 -->
+    <div class="machine-grid">
+      <!-- 機台 1 -->
+      <div class="machine-card">
+        <div class="m-header">
+          <div>
+            <div class="m-name">CNC 5軸高速銑削機 #M-01</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">加工中心 B 區 - FANUC 31i-B5</div>
+          </div>
+          <span class="m-badge badge-good">運轉良好</span>
+        </div>
+        <div class="sensor-readings">
+          <div class="sensor-box">
+            <div class="sensor-name">主軸轉速 (RPM)</div>
+            <div class="sensor-val mono">18,500</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">軸承溫度 (Temp)</div>
+            <div class="sensor-val mono">41.8°C</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">震動 RMS (mm/s)</div>
+            <div class="sensor-val mono" style="color: #16A34A;">1.12</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">冷卻液壓力 (bar)</div>
+            <div class="sensor-val mono">4.8</div>
+          </div>
+        </div>
+        <div class="health-gauge">
+          <div class="gauge-label">
+            <span>設備剩餘壽命預測 (RUL)</span>
+            <span class="mono"><b>94%</b> 健康</span>
+          </div>
+          <div class="gauge-bar">
+            <div class="gauge-fill" style="width: 94%; background: #16A34A;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 機台 2 -->
+      <div class="machine-card">
+        <div class="m-header">
+          <div>
+            <div class="m-name">超高速模組貼片機 #SMT-P04</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">SMT Line 02 - Fuji NXT III</div>
+          </div>
+          <span class="m-badge badge-warn">預警保全</span>
+        </div>
+        <div class="sensor-readings">
+          <div class="sensor-box">
+            <div class="sensor-name">貼裝週期 (CPH)</div>
+            <div class="sensor-val mono">84,000</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">真空吸嘴氣壓 (kPa)</div>
+            <div class="sensor-val mono" style="color: #D97706;">-78.2</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">吸嘴磨耗係數</div>
+            <div class="sensor-val mono" style="color: #D97706;">0.84</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">拋料率 (PPM)</div>
+            <div class="sensor-val mono">120</div>
+          </div>
+        </div>
+        <div class="health-gauge">
+          <div class="gauge-label">
+            <span>設備剩餘壽命預測 (RUL)</span>
+            <span class="mono" style="color: #D97706;"><b>68%</b> 建議換嘴</span>
+          </div>
+          <div class="gauge-bar">
+            <div class="gauge-fill" style="width: 68%; background: #D97706;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 機台 3 -->
+      <div class="machine-card">
+        <div class="m-header">
+          <div>
+            <div class="m-name">六軸關節機械手臂 #ROBOT-A09</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">組裝包裝站 - KUKA KR6</div>
+          </div>
+          <span class="m-badge badge-good">運轉良好</span>
+        </div>
+        <div class="sensor-readings">
+          <div class="sensor-box">
+            <div class="sensor-name">馬達負載率 (%)</div>
+            <div class="sensor-val mono">52%</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">減速機溫度</div>
+            <div class="sensor-val mono">38.5°C</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">循環重複精度</div>
+            <div class="sensor-val mono">±0.02mm</div>
+          </div>
+          <div class="sensor-box">
+            <div class="sensor-name">累計循環次數</div>
+            <div class="sensor-val mono">1.48M</div>
+          </div>
+        </div>
+        <div class="health-gauge">
+          <div class="gauge-label">
+            <span>設備剩餘壽命預測 (RUL)</span>
+            <span class="mono"><b>91%</b> 健康</span>
+          </div>
+          <div class="gauge-bar">
+            <div class="gauge-fill" style="width: 91%; background: #16A34A;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部清單與預警日誌 -->
+    <div class="split-grid">
+      <div class="panel">
+        <div class="panel-title">近期待執行預防性保養工單 (PM Work Orders)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>保養單號</th>
+              <th>目標設備</th>
+              <th>保養項目</th>
+              <th>預定日期</th>
+              <th>負責工程師</th>
+              <th>等級</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">PM-2026-1008</td>
+              <td>SMT-P04 貼片機</td>
+              <td>更換 Nozzle #3 真空過濾棉與氣閥校準</td>
+              <td>2026-10-08</td>
+              <td>王建宏 (設備課)</td>
+              <td><span style="color:#D97706; font-weight:600;">中級</span></td>
+            </tr>
+            <tr>
+              <td class="mono">PM-2026-1010</td>
+              <td>Reflow Oven #R01</td>
+              <td>10 溫區熱電偶溫度校準與鏈條注油</td>
+              <td>2026-10-10</td>
+              <td>林志明 (設備課)</td>
+              <td><span style="color:#16A34A; font-weight:600;">常規</span></td>
+            </tr>
+            <tr>
+              <td class="mono">PM-2026-1015</td>
+              <td>CNC 5軸機 #M-01</td>
+              <td>主軸動平衡檢測與主軸軸承潤滑油更換</td>
+              <td>2026-10-15</td>
+              <td>原廠工程師 (FANUC)</td>
+              <td><span style="color:#2563EB; font-weight:600;">重要</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">即時 AI 邊緣異音/震動預警</div>
+        <div class="alert-item">
+          <div class="alert-dot" style="background: #D97706;"></div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 600;">SMT-P04 真空壓力異常降幅</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">11:24:18 | 疑似吸嘴微堵塞或氣管輕微洩漏</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot" style="background: #16A34A;"></div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 600;">CNC-M01 軸承高頻振動分析正常</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">10:50:00 | FFT 頻譜分析未見異常諧波</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot" style="background: #16A34A;"></div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 600;">AGV 搬運自走車 #08 電池健康檢測完成</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">09:30:12 | SOH: 96%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

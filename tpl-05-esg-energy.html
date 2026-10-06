@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>綠色製造與能耗碳中和看板 (ESG & Energy) | 鴻海科技集團</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #059669; /* 綠色永續主色調 */
+      --primary-light: #ECFDF5;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+    .brand-title { font-size: 1.05rem; font-weight: 700; }
+    main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
+
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .kpi-title { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; }
+
+    .energy-bar-wrap { margin-bottom: 1rem; }
+    .energy-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.35rem; }
+    .energy-track { height: 10px; background: #F1F5F9; border-radius: 9999px; overflow: hidden; }
+    .energy-fill { height: 100%; border-radius: 9999px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <div class="brand-title">永續發展與綠色能源戰情 (ESG & Carbon) | 永續委員會</div>
+    </div>
+    <div>
+      <a href="index.html" style="color: #059669; text-decoration: none; font-size: 0.85rem; font-weight: 600;">← 返回模板總表</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="header-bar">
+      <div>
+        <h1 style="font-size: 1.35rem; font-weight: 700;">廠區智慧能耗與碳排放即時監控</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">對齊 RE100 綠電倡議、ISO 14064 溫室氣體盤查與零碳工廠 (Zero-Carbon Plant) 目標</p>
+      </div>
+      <div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">匯出 GRI 永續報告數據</button>
+      </div>
+    </div>
+
+    <!-- 4 大 ESG KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-title">今日累計碳排放 (tCO2e)</div>
+        <div class="kpi-num mono" style="font-size: 1.8rem; font-weight: 700; margin: 0.4rem 0;">42.8 <span style="font-size: 0.9rem; font-weight: 500;">公噸</span></div>
+        <div style="font-size: 0.8rem; color: #059669;">▼ 較基準年同期減碳 18.5%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">綠電使用比例 (Renewable Energy)</div>
+        <div class="kpi-val mono" style="color: #059669;">46.2%</div>
+        <div style="font-size: 0.8rem; color: #059669;">屋頂太陽能 + 綠電轉供憑證</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">製程水資源循環回收率</div>
+        <div class="kpi-val mono" style="color: #0284C7;">92.4%</div>
+        <div style="font-size: 0.8rem; color: #0284C7;">RO 逆滲透純水回收運轉中</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">單位產能能耗強度 (EUI)</div>
+        <div class="kpi-val mono">3.12 <span style="font-size: 0.85rem; font-weight: 500;">kWh/pc</span></div>
+        <div style="font-size: 0.8rem; color: #059669;">優於年度考核節能目標</div>
+      </div>
+    </div>
+
+    <!-- 能源分佈與太陽能發電 -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">
+          <span>廠區用電負載類別分佈 (Power Breakdown)</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">即時負載: 12.8 MW</span>
+        </div>
+        
+        <div class="energy-bar-wrap">
+          <div class="energy-info">
+            <span>1. SMT 與自動化生產機台設備</span>
+            <span class="mono"><b>58%</b> (7.42 MW)</span>
+          </div>
+          <div class="energy-track">
+            <div class="energy-fill" style="width: 58%; background: #059669;"></div>
+          </div>
+        </div>
+
+        <div class="energy-bar-wrap">
+          <div class="energy-info">
+            <span>2. 無塵室恆溫恆濕與 HVAC 空調系統</span>
+            <span class="mono"><b>28%</b> (3.58 MW)</span>
+          </div>
+          <div class="energy-track">
+            <div class="energy-fill" style="width: 28%; background: #0284C7;"></div>
+          </div>
+        </div>
+
+        <div class="energy-bar-wrap">
+          <div class="energy-info">
+            <span>3. 空壓機房與真空泵浦動力</span>
+            <span class="mono"><b>10%</b> (1.28 MW)</span>
+          </div>
+          <div class="energy-track">
+            <div class="energy-fill" style="width: 10%; background: #F59E0B;"></div>
+          </div>
+        </div>
+
+        <div class="energy-bar-wrap">
+          <div class="energy-info">
+            <span>4. 辦公與公共智慧 LED 照明</span>
+            <span class="mono"><b>4%</b> (0.52 MW)</span>
+          </div>
+          <div class="energy-track">
+            <div class="energy-fill" style="width: 4%; background: #94A3B8;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>屋頂分散式太陽能即時發電 (Solar PV System)</span>
+          <span style="font-size: 0.8rem; color: #059669;">● 正常發電中</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">即時發電功率</div>
+            <div class="mono" style="font-size:1.4rem; font-weight:700; color:#059669; margin-top:3px;">2,850 kW</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid var(--border); padding:0.75rem; border-radius:6px;">
+            <div style="font-size:0.75rem; color:var(--text-muted);">今日累計綠電度數</div>
+            <div class="mono" style="font-size:1.4rem; font-weight:700; color:#059669; margin-top:3px;">18,420 kWh</div>
+          </div>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          太陽光電微電網透過儲能貨櫃 (BESS 2MWh) 進行尖峰平移調節，本日已替廠區節省電費約 <b>NT$ 82,890 元</b>，減少碳排 <b>9.18 噸</b>。
+        </div>
+      </div>
+    </div>
+
+    <!-- 建築分區碳盤查監控表格 -->
+    <div class="card">
+      <div class="card-title">各廠房大樓碳排放盤查與用電明細 (Building Metering)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>廠房建築</th>
+            <th>主要用途</th>
+            <th>當月用電 (kWh)</th>
+            <th>碳排量 (tCO2e)</th>
+            <th>能耗效率評比</th>
+            <th>異常耗能警示</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">A01 棟主廠房</td>
+            <td>高密度 SMT 與無塵室潔淨室</td>
+            <td class="mono">245,000</td>
+            <td class="mono">122.5</td>
+            <td><span style="color:#059669; background:#ECFDF5; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">等級 A</span></td>
+            <td>正常</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">B02 棟精密加工</td>
+            <td>CNC 機構件與表面陽極處理</td>
+            <td class="mono">180,000</td>
+            <td class="mono">90.0</td>
+            <td><span style="color:#059669; background:#ECFDF5; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">等級 A</span></td>
+            <td>正常</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">C03 棟自動化倉儲</td>
+            <td>立體庫 AS/RS 與 AGV 充電站</td>
+            <td class="mono">62,000</td>
+            <td class="mono">31.0</td>
+            <td><span style="color:#2563EB; background:#EFF6FF; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">等級 B+</span></td>
+            <td>夜間充電離峰優化中</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>
