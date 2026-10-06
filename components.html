@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI 元件庫與設計系統字典 (Design System) | 鴻海內部系統模板</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --text-main: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-page); color: var(--text-main); }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+
+    main { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .page-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .page-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+
+    .section-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .section-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; justify-content: space-between; }
+    .comp-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+
+    /* 元件樣式庫實體 */
+    /* 按鈕 Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+      outline: none;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #fff; border-color: var(--border); color: var(--text-main); }
+    .btn-secondary:hover { background: #F8FAFC; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #B91C1C; }
+    .btn-disabled { background: #E2E8F0; color: #94A3B8; cursor: not-allowed; }
+
+    /* 標籤 Badges */
+    .badge { padding: 3px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .badge-success { background: #DCFCE7; color: #16A34A; }
+    .badge-warning { background: #FEF3C7; color: #D97706; }
+    .badge-danger { background: #FEE2E2; color: #DC2626; }
+    .badge-info { background: #EFF6FF; color: #2563EB; }
+    .badge-neutral { background: #F1F5F9; color: #475569; }
+
+    /* 表單輸入框 Input / Switch */
+    .form-input {
+      height: 38px;
+      padding: 0 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      outline: none;
+      background: #fff;
+    }
+    .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    
+    /* 開關 Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CBD5E1; transition: .2s; border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .2s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* 骨架屏 Skeleton Loading */
+    .skeleton {
+      background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* 空狀態 Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      background: #FAFAFA;
+    }
+    .empty-icon { font-size: 2.5rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+    /* 程式碼範例區 */
+    pre {
+      background: #0F172A;
+      color: #F8FAFC;
+      padding: 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <span style="font-weight:700;">鴻海內部系統 UI 元件字典 (Component Kit)</span>
+    </div>
+    <div>
+      <a href="dashboard.html" style="color:var(--primary); text-decoration:none; font-weight:600; font-size:0.85rem; margin-right:1rem;">前往營運儀表板</a>
+      <a href="index.html" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem;">← 模板目錄</a>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">企業級通用 UI 元件庫指南</h1>
+    <p class="page-desc">
+      提供給各事業群（CESBG、S次集團等）前端與後端開發人員直接複製套用。維持集團全站設計語言統一（Clean & Minimalist 白色極簡風格）。
+    </p>
+
+    <!-- 1. 按鈕組件 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>1. 按鈕元件系統 (Buttons)</span>
+        <span style="font-size:0.8rem; color:var(--text-muted);">支援 Primary / Secondary / Danger / 載入中</span>
+      </div>
+      <div class="comp-row">
+        <button class="btn btn-primary">主要動作 (Primary)</button>
+        <button class="btn btn-secondary">次要按鈕 (Secondary)</button>
+        <button class="btn btn-danger">危險操作 (Danger)</button>
+        <button class="btn btn-disabled" disabled>停用狀態 (Disabled)</button>
+        <button class="btn btn-primary" onclick="alert('觸發 Loading');">
+          <span style="display:inline-block; width:12px; height:12px; border:2px solid #fff; border-top-color:transparent; border-radius:50%; animation:spin .8s linear infinite;"></span>
+          載入中 (Loading)
+        </button>
+      </div>
+      <pre><code>&lt;button class="btn btn-primary"&gt;主要動作&lt;/button&gt;
+&lt;button class="btn btn-secondary"&gt;次要按鈕&lt;/button&gt;
+&lt;button class="btn btn-danger"&gt;危險操作&lt;/button&gt;</code></pre>
+    </div>
+
+    <!-- 2. 狀態標籤 Badges -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>2. 狀態徽章標籤 (Badges & Tags)</span>
+        <span style="font-size:0.8rem; color:var(--text-muted);">用於審批狀態、產線燈號</span>
+      </div>
+      <div class="comp-row">
+        <span class="badge badge-success">● 已核准 (Approved)</span>
+        <span class="badge badge-warning">● 審核中 (Pending)</span>
+        <span class="badge badge-danger">● 已駁回 (Rejected)</span>
+        <span class="badge badge-info">● 處理中 (Processing)</span>
+        <span class="badge badge-neutral">離線 (Offline)</span>
+      </div>
+      <pre><code>&lt;span class="badge badge-success"&gt;● 已核准&lt;/span&gt;
+&lt;span class="badge badge-warning"&gt;● 審核中&lt;/span&gt;
+&lt;span class="badge badge-danger"&gt;● 已駁回&lt;/span&gt;</code></pre>
+    </div>
+
+    <!-- 3. 表單與開關元件 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>3. 表單輸入與開關控制 (Form Inputs & Switch)</span>
+      </div>
+      <div class="comp-row">
+        <input type="text" class="form-input" placeholder="標準文字輸入框...">
+        <select class="form-input">
+          <option>下拉選單項目 A</option>
+          <option>下拉選單項目 B</option>
+        </select>
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.875rem; cursor:pointer;">
+          <div class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </div>
+          <span>自動即時更新數據</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 4. 骨架屏載入 (Skeleton Loading) -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>4. 數據加載骨架屏 (Skeleton Placeholder)</span>
+        <span style="font-size:0.8rem; color:var(--text-muted);">API 資料回傳前優雅過渡</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; max-width:400px;">
+        <div class="skeleton" style="height:20px; width:70%;"></div>
+        <div class="skeleton" style="height:14px; width:100%;"></div>
+        <div class="skeleton" style="height:14px; width:90%;"></div>
+      </div>
+    </div>
+
+    <!-- 5. 空資料缺省狀態 (Empty State) -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>5. 無資料缺省狀態 (Empty State)</span>
+      </div>
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <div style="font-weight:700; font-size:1rem; margin-bottom:4px;">目前尚無待審批的工單紀錄</div>
+        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">當產線或同仁發起新申請時，資料將自動呈現於此處。</div>
+        <button class="btn btn-primary" onclick="alert('發起申請');">+ 發起第一筆工單</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer style="text-align:center; padding:2rem; border-top:1px solid var(--border); font-size:0.85rem; color:var(--text-muted);">
+    &copy; 2026 鴻海科技集團 · CESBG 前端架構規範庫
+  </footer>
+
+</body>
+</html>

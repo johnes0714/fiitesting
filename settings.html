@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>個人資料與系統設定 | 企業內部系統</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-page); color: var(--text-main); }
+
+    header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-box { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo { height: 28px; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .page-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.75rem; }
+
+    .card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .form-ctrl {
+      width: 100%;
+      height: 40px;
+      padding: 0 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      outline: none;
+    }
+    .form-ctrl:focus { border-color: var(--primary); }
+
+    .btn {
+      padding: 0.55rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+
+    .switch-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+    .switch-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-box">
+      <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+      <span style="font-weight:700;">帳號中心與系統設定</span>
+    </div>
+    <div>
+      <a href="dashboard.html" style="color:var(--primary); text-decoration:none; font-weight:600; font-size:0.85rem; margin-right:1rem;">返回儀表板</a>
+      <a href="index.html" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem;">模板首頁</a>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">個人帳號安全與偏好設定</h1>
+    <p class="page-desc">管理同仁密碼生命週期、雙因子 (MFA) 安全鎖定與系統操作通知偏好。</p>
+
+    <!-- 基本資料 -->
+    <div class="card">
+      <div class="card-title">同仁基本檔案 (Profile)</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+        <div class="form-group">
+          <label class="form-label">員工姓名</label>
+          <input type="text" class="form-ctrl" value="王大明 (David Wang)" readonly style="background:#F8FAFC;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">所屬組織單位</label>
+          <input type="text" class="form-ctrl" value="CESBG 資訊處 / 雲端架構處" readonly style="background:#F8FAFC;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">公司電子郵件</label>
+          <input type="text" class="form-ctrl" value="david.wang@foxconn.com" readonly style="background:#F8FAFC;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">員工工號 (Staff ID)</label>
+          <input type="text" class="form-ctrl" value="FOX-IT-8842" readonly style="background:#F8FAFC;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 密碼修改與資安防護 -->
+    <div class="card">
+      <div class="card-title">密碼安全與雙因子驗證 (Security & MFA)</div>
+      <form onsubmit="alert('密碼變更成功！請牢記新密碼。'); return false;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+          <div class="form-group">
+            <label class="form-label">目前密碼</label>
+            <input type="password" class="form-ctrl" placeholder="••••••••" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">設定新密碼 (需包含大小寫英數與符號，至少 12 碼)</label>
+            <input type="password" class="form-ctrl" placeholder="••••••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn">更新密碼</button>
+      </form>
+    </div>
+
+    <!-- 系統偏好與通知 -->
+    <div class="card">
+      <div class="card-title">通知與操作偏好 (Preferences)</div>
+      <div class="switch-row">
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">工單與權限核准即時 Email 提示</div>
+          <div style="font-size:0.8rem; color:var(--text-muted);">當有涉及您部門的新申請時自動寄信提醒</div>
+        </div>
+        <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--primary);">
+      </div>
+      <div class="switch-row">
+        <div>
+          <div style="font-weight:600; font-size:0.9rem;">產線異常停機即時簡訊 (SMS Alert)</div>
+          <div style="font-size:0.8rem; color:var(--text-muted);">當 OEE 低於 80% 或貼片機缺料時立即通報</div>
+        </div>
+        <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--primary);">
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

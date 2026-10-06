@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>403 存取權限不足 | 鴻海企業內部系統</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #F8FAFC;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --primary: #2563EB;
+      --danger: #DC2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .error-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+    }
+    .brand-logo { height: 38px; margin-bottom: 1.5rem; }
+    .error-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--danger);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .error-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .error-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; }
+    .btn-group { display: flex; justify-content: center; gap: 0.75rem; }
+    .btn {
+      padding: 0.55rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-primary { background: var(--primary); color: #fff; border: none; }
+    .btn-secondary { background: #fff; border: 1px solid var(--border); color: var(--text-main); }
+  </style>
+</head>
+<body>
+
+  <div class="error-card">
+    <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
+    <div class="error-code">403</div>
+    <h1 class="error-title">存取受限 · 權限不足 (Access Denied)</h1>
+    <p class="error-desc">
+      您的員工帳號目前尚未具備此模組之存取權限。<br>
+      若您的業務需要操作此模組，請透過內部權限系統提出審批申請，或聯繫 IT 服務台協助開通。
+    </p>
+    <div class="btn-group">
+      <a href="dashboard.html" class="btn btn-secondary">返回營運儀表板</a>
+      <a href="dashboard.html" class="btn btn-primary" onclick="alert('請在儀表板點擊「新增申請單」提出權限審批！');">提出權限申請</a>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -24,8 +24,10 @@
       --border-focus: #2563EB;      /* 輸入聚焦藍 */
       --primary: #2563EB;           /* 主要動作藍色 */
       --primary-hover: #1D4ED8;     /* 按鈕 Hover 顏色 */
+      --success: #16A34A;
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
       --radius-md: 12px;
       --radius-sm: 6px;
     }
@@ -45,12 +47,15 @@
       justify-content: center;
       min-height: 100vh;
       padding: 1.5rem;
+      position: relative;
     }
 
     /* 登入外層容器 */
     .login-container {
       width: 100%;
       max-width: 420px;
+      position: relative;
+      z-index: 10;
     }
 
     /* 登入主卡片 */
@@ -60,6 +65,7 @@
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-card);
       padding: 2.5rem 2rem;
+      transition: transform 0.2s ease;
     }
 
     /* 品牌 Logo 與標題區 */
@@ -139,7 +145,12 @@
       color: var(--text-muted);
       cursor: pointer;
       font-size: 0.8rem;
-      padding: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .toggle-pwd:hover {
+      color: var(--text-main);
+      background-color: #F1F5F9;
     }
 
     /* 記住我與忘記密碼水平列 */
@@ -172,6 +183,10 @@
       text-decoration: none;
       font-weight: 500;
       transition: color 0.15s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
     }
 
     .forgot-link:hover {
@@ -179,13 +194,14 @@
       color: var(--primary-hover);
     }
 
-    /* 登入送出按鈕 */
+    /* 登入送出按鈕 (含 Spinner Loading) */
     .btn-submit {
       width: 100%;
       height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       background-color: var(--primary);
       color: #FFFFFF;
       font-size: 0.95rem;
@@ -194,15 +210,36 @@
       border-radius: var(--radius-sm);
       cursor: pointer;
       box-shadow: var(--shadow-sm);
-      transition: background-color 0.15s ease, transform 0.05s ease;
+      transition: all 0.15s ease;
+      position: relative;
     }
 
-    .btn-submit:hover {
+    .btn-submit:hover:not(:disabled) {
       background-color: var(--primary-hover);
     }
 
-    .btn-submit:active {
-      transform: scale(0.99);
+    .btn-submit:disabled {
+      background-color: #93C5FD;
+      cursor: not-allowed;
+    }
+
+    /* 按鈕內的旋轉 Loading 圖示 */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     /* 頁尾版權告示 */
@@ -211,10 +248,182 @@
       margin-top: 1.75rem;
       font-size: 0.8rem;
       color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .login-footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .login-footer a:hover {
+      color: var(--primary);
+    }
+
+    /* ========================================================
+       跳窗元件 (Modal Component)
+       ======================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: 440px;
+      padding: 2rem;
+      transform: scale(0.95);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.active .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+      border-radius: 4px;
+    }
+    .modal-close:hover {
+      color: var(--text-main);
+      background-color: #F1F5F9;
+    }
+
+    .modal-body {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .btn-secondary {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .btn-secondary:hover {
+      background-color: #F8FAFC;
+    }
+
+    .btn-modal-action {
+      background: var(--primary);
+      border: none;
+      color: #FFFFFF;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s;
+    }
+    .btn-modal-action:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+    .btn-modal-action:disabled {
+      background-color: #93C5FD;
+      cursor: not-allowed;
+    }
+
+    /* ========================================================
+       Toast 輕量即時通知元件
+       ======================================================== */
+    .toast-container {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .toast {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 280px;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast-success {
+      border-left-color: var(--success);
+    }
+    .toast-icon {
+      font-weight: 700;
+      color: var(--success);
     }
   </style>
 </head>
 <body>
+
+  <!-- Toast 通知容器 -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <div class="login-container">
     <div class="login-card">
@@ -226,8 +435,8 @@
         <p class="brand-subtitle">請輸入企業同仁帳號以存取內部資源</p>
       </div>
 
-      <!-- 登入表單：送出直接前往儀表板 -->
-      <form action="dashboard.html" method="GET" id="loginForm">
+      <!-- 登入表單 -->
+      <form id="loginForm">
         <!-- 帳號輸入框 -->
         <div class="form-group">
           <label for="username" class="form-label">員工帳號 / Email</label>
@@ -269,23 +478,98 @@
             <input type="checkbox" name="remember" checked>
             <span>記住帳號</span>
           </label>
-          <a href="#" class="forgot-link" onclick="alert('請聯繫 IT 服務台 (分機 #8888) 協助重設密碼。'); return false;">忘記密碼？</a>
+          <button type="button" class="forgot-link" id="openForgotModal">忘記密碼？</button>
         </div>
 
-        <!-- 登入按鈕 -->
-        <button type="submit" class="btn-submit">進入系統</button>
+        <!-- 登入按鈕 (具備 Loading 轉圈效果) -->
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span class="spinner" id="loginSpinner"></span>
+          <span id="btnText">進入系統</span>
+        </button>
       </form>
 
     </div>
 
-    <!-- 頁尾宣告 -->
+    <!-- 頁尾宣告與跳窗連結 -->
     <div class="login-footer">
-      &copy; 2026 Enterprise Corp. All rights reserved. 僅供內部授權同仁存取。
+      &copy; 2026 Enterprise Corp. All rights reserved.<br>
+      僅供內部授權同仁存取 · <a id="openPolicyModal">資安守則與隱私規範</a>
     </div>
   </div>
 
+  <!-- ========================================================
+       跳窗 1：忘記密碼對話框 (Forgot Password Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="forgotModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">重設帳號密碼</h3>
+        <button class="modal-close" data-close="forgotModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 1rem;">請輸入您的內部員工編號或企業電子信箱，系統將寄送動態身分驗證碼 (OTP) 至您的信箱。</p>
+        <div class="form-group">
+          <label class="form-label">內部電子郵件</label>
+          <input type="email" id="resetEmail" class="form-input" placeholder="name@company.internal" value="admin@company.internal">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" data-close="forgotModal">取消</button>
+        <button type="button" class="btn-modal-action" id="btnSendReset">
+          <span class="spinner" id="resetSpinner"></span>
+          <span id="resetBtnText">發送驗證連結</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       跳窗 2：資安守則規範 (Policy Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="policyModal">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">企業內部資訊安全使用守則</h3>
+        <button class="modal-close" data-close="policyModal">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 280px; overflow-y: auto; padding-right: 0.5rem;">
+        <p><b>一、帳號安全與權限使用</b><br>
+        本系統僅限經授權之在職同仁登入使用，嚴禁轉借、洩漏帳號密碼或代理他人打卡/簽核操作。所有特權存取皆依法全程稽核側錄。</p>
+        <br>
+        <p><b>二、資料保密與機密等級</b><br>
+        系統內展示之產線良率、工單排程、客戶專案代號均屬機密 (Confidential) 等級，嚴禁未授權截圖、複製或散布至外部網際網路。</p>
+        <br>
+        <p><b>三、終端設備合規</b><br>
+        請確認連線之電腦已安裝集團規定之防毒防護軟體與資安防禦代理程式 (EDR)，並定期更新系統弱點安全性修補。</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal-action" data-close="policyModal">我已閱讀並充分瞭解</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 互動腳本：Loading 處理、跳窗開關、Toast 提示 -->
   <script>
-    // 密碼顯示/隱藏切換
+    // 1. Toast 提示通知函式
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <span class="toast-icon">✔</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 50);
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // 2. 密碼明文切換
     const togglePwd = document.getElementById('togglePwd');
     const pwdInput = document.getElementById('password');
     if (togglePwd && pwdInput) {
@@ -295,6 +579,92 @@
         togglePwd.textContent = isPassword ? '隱藏' : '顯示';
       });
     }
+
+    // 3. 登入按鈕 Loading 與跳轉
+    const loginForm = document.getElementById('loginForm');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnText = document.getElementById('btnText');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault(); // 攔截預設送出，模擬真實 API 驗證流程
+
+      btnSubmit.classList.add('loading');
+      btnSubmit.disabled = true;
+      btnText.textContent = '身分安全驗證中...';
+
+      // 模擬後端身分認證延遲 (1.2 秒)
+      setTimeout(() => {
+        btnText.textContent = '驗證成功，正在跳轉...';
+        showToast('身分驗證成功！歡迎回到系統。', 'success');
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      }, 1200);
+    });
+
+    // 4. Modal 跳窗邏輯 (開啟/關閉)
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('active');
+    }
+
+    document.getElementById('openForgotModal').addEventListener('click', () => openModal('forgotModal'));
+    document.getElementById('openPolicyModal').addEventListener('click', () => openModal('policyModal'));
+
+    // 綁定所有關閉按鈕 (data-close)
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-close');
+        closeModal(targetId);
+      });
+    });
+
+    // 點擊背景遮罩關閉 Modal
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+          backdrop.classList.remove('active');
+        }
+      });
+    });
+
+    // 按下 ESC 鍵關閉所有開啟的 Modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.active').forEach(m => m.classList.remove('active'));
+      }
+    });
+
+    // 5. 忘記密碼發送驗證碼 (附帶 Loading 效果)
+    const btnSendReset = document.getElementById('btnSendReset');
+    const resetBtnText = document.getElementById('resetBtnText');
+    const resetSpinner = document.getElementById('resetSpinner');
+
+    btnSendReset.addEventListener('click', () => {
+      const email = document.getElementById('resetEmail').value.trim();
+      if (!email) {
+        alert('請輸入有效的公司信箱！');
+        return;
+      }
+
+      resetSpinner.style.display = 'inline-block';
+      btnSendReset.disabled = true;
+      resetBtnText.textContent = '發送中...';
+
+      setTimeout(() => {
+        resetSpinner.style.display = 'none';
+        btnSendReset.disabled = false;
+        resetBtnText.textContent = '發送驗證連結';
+        closeModal('forgotModal');
+        showToast(`密碼重設連結已成功寄送至 ${email}，請查收信件！`, 'success');
+      }, 1200);
+    });
   </script>
 
 </body>

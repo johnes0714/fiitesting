@@ -27,15 +27,19 @@
       
       --border-light: #E2E8F0;       /* 邊框線條 */
       --primary: #2563EB;            /* 主品牌藍 */
+      --primary-hover: #1D4ED8;
       --primary-light: #EFF6FF;      /* 主色淺底 */
       
       --success: #16A34A;            /* 綠色狀態 */
       --success-bg: #DCFCE7;
       --warning: #D97706;            /* 黃色狀態 */
       --warning-bg: #FEF3C7;
+      --danger: #DC2626;             /* 紅色狀態 */
+      --danger-bg: #FEE2E2;
       
       --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
       --shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
       --radius-sm: 6px;
       --radius-md: 10px;
     }
@@ -213,13 +217,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 6px;
       border-radius: 4px;
-      transition: color 0.15s;
+      transition: all 0.15s;
     }
 
     .logout-btn:hover {
       color: #EF4444;
+      background-color: #FEE2E2;
     }
 
     /* ========================================================
@@ -252,7 +257,6 @@
       gap: 1rem;
     }
 
-    /* 手機版側邊欄漢堡開關 (Desktop 預設隱藏) */
     .menu-toggle {
       display: none;
       background: none;
@@ -279,9 +283,9 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      position: relative;
     }
 
-    /* 頂部快速搜尋框 */
     .search-bar {
       position: relative;
     }
@@ -347,6 +351,57 @@
       border: 2px solid #FFFFFF;
     }
 
+    /* 通知下拉面板 (Notification Popover) */
+    .notif-popover {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      width: 320px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-modal);
+      display: none;
+      z-index: 60;
+    }
+    .notif-popover.active {
+      display: block;
+      animation: popIn 0.15s ease-out;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .notif-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .notif-list {
+      max-height: 260px;
+      overflow-y: auto;
+      list-style: none;
+    }
+    .notif-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.825rem;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .notif-item:hover {
+      background-color: var(--bg-page);
+    }
+    .notif-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
     /* 主內容區 (Main Content) */
     .content-area {
       padding: 2rem 1.75rem;
@@ -396,9 +451,13 @@
       transition: all 0.15s ease;
     }
 
-    .btn-secondary:hover {
+    .btn-secondary:hover:not(:disabled) {
       background-color: var(--bg-page);
       color: var(--text-main);
+    }
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .btn-primary {
@@ -417,13 +476,32 @@
       transition: background-color 0.15s ease;
     }
 
-    .btn-primary:hover {
-      background-color: #1D4ED8;
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+    .btn-primary:disabled {
+      background-color: #93C5FD;
+      cursor: not-allowed;
     }
 
-    /* ========================================================
-       3. 數據卡片 (KPI Cards Grid)
-       ======================================================== */
+    /* 按鈕內的旋轉 Loading 圖示 */
+    .spinner-btn {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+    .btn-loading .spinner-btn {
+      display: inline-block;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 數據卡片 (KPI Cards Grid) */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -484,9 +562,7 @@
       color: var(--text-muted);
     }
 
-    /* ========================================================
-       4. 數據表格區 (Data Table Card)
-       ======================================================== */
+    /* 數據表格區 (Data Table Card) */
     .table-card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-light);
@@ -511,16 +587,34 @@
       color: var(--text-main);
     }
 
+    .table-search-box {
+      position: relative;
+    }
+
     .table-search {
-      padding: 0.4rem 0.75rem;
+      padding: 0.45rem 0.75rem 0.45rem 2rem;
       font-size: 0.85rem;
       border: 1px solid var(--border-light);
       border-radius: var(--radius-sm);
       outline: none;
+      width: 220px;
+      transition: border-color 0.15s;
     }
 
     .table-search:focus {
       border-color: var(--primary);
+    }
+
+    .table-search-icon {
+      position: absolute;
+      left: 0.65rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-muted);
+      stroke-width: 2;
+      fill: none;
     }
 
     .table-responsive {
@@ -560,6 +654,14 @@
       background-color: #F8FAFC;
     }
 
+    @keyframes highlightRow {
+      0% { background-color: #EFF6FF; }
+      100% { background-color: transparent; }
+    }
+    .row-highlight {
+      animation: highlightRow 2.5s ease-out;
+    }
+
     /* 狀態標籤 (Badges) */
     .badge {
       display: inline-flex;
@@ -580,17 +682,35 @@
       color: var(--warning);
     }
 
+    .badge-danger {
+      background-color: var(--danger-bg);
+      color: var(--danger);
+    }
+
     /* 表格操作按鈕 */
-    .action-link {
+    .action-btn {
       color: var(--primary);
       text-decoration: none;
       font-weight: 500;
       font-size: 0.85rem;
-      margin-right: 0.75rem;
+      margin-right: 0.65rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
     }
 
-    .action-link:hover {
+    .action-btn:hover {
       text-decoration: underline;
+      background-color: #EFF6FF;
+    }
+
+    .action-reject {
+      color: var(--danger);
+    }
+    .action-reject:hover {
+      background-color: #FEE2E2;
     }
 
     /* 表格底部分頁 */
@@ -625,9 +745,198 @@
       border-color: var(--primary);
     }
 
-    /* ========================================================
-       5. 響應式適配 (RWD Breakpoints)
-       ======================================================== */
+    /* 彈出跳窗系統 (Modal Dialogs) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: 520px;
+      padding: 2rem;
+      transform: scale(0.96);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.active .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+    .modal-close:hover {
+      color: var(--text-main);
+      background-color: #F1F5F9;
+    }
+
+    .modal-body {
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      margin-bottom: 1.15rem;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+    .form-ctrl {
+      width: 100%;
+      height: 40px;
+      padding: 0 0.85rem;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      outline: none;
+      background: #FFFFFF;
+    }
+    .form-ctrl:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+    textarea.form-ctrl {
+      height: 80px;
+      padding: 0.65rem 0.85rem;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* 時間軸 (Timeline) 歷程跳窗 */
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      bottom: 5px;
+      width: 2px;
+      background: var(--border-light);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.25rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -1.5rem;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--primary);
+    }
+    .timeline-dot.done {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    .timeline-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .timeline-content {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    /* Toast 提示通知元件 */
+    .toast-container {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .toast {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 300px;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .toast-success { border-left-color: var(--success); }
+    .toast-danger { border-left-color: var(--danger); }
+    .toast-info { border-left-color: var(--primary); }
+
     @media (max-width: 960px) {
       .sidebar {
         position: fixed;
@@ -635,27 +944,20 @@
         top: 0;
         transform: translateX(-100%);
       }
-
       .sidebar.open {
         transform: translateX(0);
         box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
       }
-
-      .menu-toggle {
-        display: block;
-      }
-
-      .search-bar {
-        display: none;
-      }
-
-      .content-area {
-        padding: 1.25rem;
-      }
+      .menu-toggle { display: block; }
+      .search-bar { display: none; }
+      .content-area { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Toast 通知容器 -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <div class="app-layout">
 
@@ -673,31 +975,43 @@
         <div class="nav-group-title">核心概覽</div>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="dashboard.html" class="nav-link active">
               <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
               <span>營運儀表板</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="tpl-01-manufacturing-lines.html" class="nav-link">
               <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-              <span>數據統計報表</span>
+              <span>產線 OEE 監控</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tpl-07-bigdata-analytics.html" class="nav-link">
+              <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              <span>大數據 AI 運算</span>
             </a>
           </li>
         </ul>
 
-        <div class="nav-group-title">系統管理</div>
+        <div class="nav-group-title">系統與規範</div>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <span>人員權限管理</span>
+            <a href="components.html" class="nav-link">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>UI 元件庫字典</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="settings.html" class="nav-link">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-              <span>全域系統設定</span>
+              <span>個人與系統設定</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link" style="color: var(--primary);">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              <span>全系列模板展示</span>
             </a>
           </li>
         </ul>
@@ -723,12 +1037,10 @@
       <!-- 頂部資訊列 (Header) -->
       <header class="top-header">
         <div class="header-left">
-          <!-- 行動端漢堡選單切換按鈕 -->
           <button class="menu-toggle" id="menuToggle" aria-label="切換選單">
             <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
           </button>
           
-          <!-- 麵包屑導航 -->
           <nav class="breadcrumb">
             <span>工作台</span>
             <span>/</span>
@@ -737,17 +1049,36 @@
         </div>
 
         <div class="header-right">
-          <!-- 快速搜尋框 -->
           <div class="search-bar">
             <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <input type="text" class="search-input" placeholder="全域搜尋功能或代號...">
           </div>
 
-          <!-- 通知鈴鐺按鈕 -->
-          <button class="icon-btn" aria-label="通知事項" onclick="alert('目前有 3 筆待審核申請單。');">
+          <button class="icon-btn" id="notifBtn" aria-label="通知事項">
             <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-            <span class="badge-dot"></span>
+            <span class="badge-dot" id="notifDot"></span>
           </button>
+
+          <div class="notif-popover" id="notifPopover">
+            <div class="notif-header">
+              <span>待處理通知 (3)</span>
+              <button style="background:none; border:none; color:var(--primary); font-size:0.75rem; cursor:pointer;" id="markAllRead">全部標為已讀</button>
+            </div>
+            <ul class="notif-list">
+              <li class="notif-item">
+                <div style="font-weight:600;">AWS Production 權限待您覆審</div>
+                <div class="notif-time">10 分鐘前 · 基礎架構組 李宗憲</div>
+              </li>
+              <li class="notif-item">
+                <div style="font-weight:600;">SMT Line 02 貼片機發出預防保養提示</div>
+                <div class="notif-time">25 分鐘前 · IoT 設備保全系統</div>
+              </li>
+              <li class="notif-item">
+                <div style="font-weight:600;">Google Analytics 存取審批已送出</div>
+                <div class="notif-time">1 小時前 · 行銷營運處</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </header>
 
@@ -761,11 +1092,18 @@
             <p class="page-desc">今日全系統服務健康度良好，排程任務正常運作中。</p>
           </div>
           <div class="page-actions">
-            <button class="btn-secondary" onclick="alert('已開始匯出近 30 日報表...');">
-              <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              匯出報表
+            <!-- 真實動態下載報表按鈕 (附帶 Loading 轉圈效果與產生 UTF-8 BOM CSV 檔案) -->
+            <button class="btn-secondary" id="btnExport">
+              <span class="spinner-btn" id="exportSpinner"></span>
+              <svg id="exportIcon" style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span id="exportText">匯出報表 (Excel)</span>
             </button>
-            <button class="btn-primary" onclick="alert('開啟新建立作業對話框');">新增申請</button>
+            
+            <!-- 新增申請按鈕 (開啟跳窗 Modal) -->
+            <button class="btn-primary" id="btnOpenCreateModal">
+              <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              新增申請單
+            </button>
           </div>
         </div>
 
@@ -797,9 +1135,9 @@
             <div class="metric-header">
               <span class="metric-title">待簽核審批事項</span>
             </div>
-            <div class="metric-value">7</div>
+            <div class="metric-value" id="kpiPendingCount">2</div>
             <div class="metric-trend trend-neutral">
-              <span>3 筆為高優先級</span>
+              <span>即時統計中</span>
             </div>
           </div>
 
@@ -817,27 +1155,28 @@
         <!-- 4. 數據表格區 (Data Table) -->
         <section class="table-card">
           <div class="table-card-header">
-            <div class="table-card-title">近期同仁權限申請紀錄</div>
-            <div>
-              <input type="text" class="table-search" placeholder="篩選工號或姓名...">
+            <div class="table-card-title">同仁權限申請紀錄列表</div>
+            <div class="table-search-box">
+              <svg class="table-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" class="table-search" id="tableFilterInput" placeholder="即時篩選單號、姓名、部門...">
             </div>
           </div>
 
           <div class="table-responsive">
-            <table class="data-table">
+            <table class="data-table" id="dataTable">
               <thead>
                 <tr>
                   <th>申請單號</th>
                   <th>申請同仁</th>
                   <th>所屬部門</th>
-                  <th>權限類型</th>
+                  <th>權限項目</th>
                   <th>申請時間</th>
                   <th>目前狀態</th>
-                  <th>操作</th>
+                  <th>功能操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
+              <tbody id="tableBody">
+                <tr data-req="#REQ-2026-081" data-name="陳雅婷 (Emily Chen)" data-dept="產品設計部" data-item="Figma Enterprise 授權">
                   <td style="font-family: monospace; font-weight: 600;">#REQ-2026-081</td>
                   <td>陳雅婷 (Emily Chen)</td>
                   <td>產品設計部</td>
@@ -845,23 +1184,24 @@
                   <td>2026-10-06 09:30</td>
                   <td><span class="badge badge-success">已核准</span></td>
                   <td>
-                    <a href="#" class="action-link">查看</a>
-                    <a href="#" class="action-link">歷程</a>
+                    <button class="action-btn" onclick="openDetailModal('#REQ-2026-081', '陳雅婷', '產品設計部', 'Figma Enterprise 授權', '已核准')">查看</button>
+                    <button class="action-btn" onclick="openHistoryModal('#REQ-2026-081')">歷程</button>
                   </td>
                 </tr>
-                <tr>
+                <tr data-req="#REQ-2026-082" data-name="李宗憲 (Sam Li)" data-dept="基礎架構組" data-item="AWS Production 存取">
                   <td style="font-family: monospace; font-weight: 600;">#REQ-2026-082</td>
                   <td>李宗憲 (Sam Li)</td>
                   <td>基礎架構組</td>
                   <td>AWS Production 存取</td>
                   <td>2026-10-06 10:15</td>
-                  <td><span class="badge badge-warning">審核中</span></td>
+                  <td><span class="badge badge-warning" id="status-082">審核中</span></td>
                   <td>
-                    <a href="#" class="action-link">審批</a>
-                    <a href="#" class="action-link">駁回</a>
+                    <button class="action-btn" onclick="openApproveModal('#REQ-2026-082', '李宗憲', 'AWS Production 存取', 'status-082')">審批</button>
+                    <button class="action-btn action-reject" onclick="openRejectModal('#REQ-2026-082', '李宗憲', 'status-082')">駁回</button>
+                    <button class="action-btn" onclick="openHistoryModal('#REQ-2026-082')">歷程</button>
                   </td>
                 </tr>
-                <tr>
+                <tr data-req="#REQ-2026-083" data-name="林志豪 (Howard Lin)" data-dept="資訊安全部" data-item="VPN 憑證重設">
                   <td style="font-family: monospace; font-weight: 600;">#REQ-2026-083</td>
                   <td>林志豪 (Howard Lin)</td>
                   <td>資訊安全部</td>
@@ -869,20 +1209,21 @@
                   <td>2026-10-06 11:02</td>
                   <td><span class="badge badge-success">已核准</span></td>
                   <td>
-                    <a href="#" class="action-link">查看</a>
-                    <a href="#" class="action-link">歷程</a>
+                    <button class="action-btn" onclick="openDetailModal('#REQ-2026-083', '林志豪', '資訊安全部', 'VPN 憑證重設', '已核准')">查看</button>
+                    <button class="action-btn" onclick="openHistoryModal('#REQ-2026-083')">歷程</button>
                   </td>
                 </tr>
-                <tr>
+                <tr data-req="#REQ-2026-084" data-name="黃子涵 (Hanna Huang)" data-dept="行銷營運處" data-item="Google Analytics 權限">
                   <td style="font-family: monospace; font-weight: 600;">#REQ-2026-084</td>
                   <td>黃子涵 (Hanna Huang)</td>
                   <td>行銷營運處</td>
                   <td>Google Analytics 權限</td>
                   <td>2026-10-06 11:20</td>
-                  <td><span class="badge badge-warning">審核中</span></td>
+                  <td><span class="badge badge-warning" id="status-084">審核中</span></td>
                   <td>
-                    <a href="#" class="action-link">審批</a>
-                    <a href="#" class="action-link">駁回</a>
+                    <button class="action-btn" onclick="openApproveModal('#REQ-2026-084', '黃子涵', 'Google Analytics 權限', 'status-084')">審批</button>
+                    <button class="action-btn action-reject" onclick="openRejectModal('#REQ-2026-084', '黃子涵', 'status-084')">駁回</button>
+                    <button class="action-btn" onclick="openHistoryModal('#REQ-2026-084')">歷程</button>
                   </td>
                 </tr>
               </tbody>
@@ -891,7 +1232,7 @@
 
           <!-- 表格底部分頁與總覽 -->
           <div class="table-footer">
-            <span>顯示第 1 到 4 筆，共 4 筆資料</span>
+            <span id="tableCountText">顯示 4 筆資料</span>
             <div class="pagination">
               <button class="page-btn" disabled>上一頁</button>
               <button class="page-btn active">1</button>
@@ -906,26 +1247,369 @@
 
   </div>
 
-  <!-- 手機版側邊欄開關 JavaScript -->
+  <!-- 跳窗 1：新增申請單 Modal -->
+  <div class="modal-backdrop" id="modalCreate">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">建立新權限申請單</h3>
+        <button class="modal-close" data-close="modalCreate">&times;</button>
+      </div>
+      <form id="formCreateRequest">
+        <div class="modal-body">
+          <div class="form-row">
+            <label>申請人姓名 (工號)</label>
+            <input type="text" class="form-ctrl" id="newReqName" placeholder="例如：張家豪 (FOX-9988)" required>
+          </div>
+          <div class="form-row">
+            <label>所屬單位 / 部門</label>
+            <select class="form-ctrl" id="newReqDept" required>
+              <option value="雲端架構處">雲端架構處</option>
+              <option value="智慧製造 SMT 車間">智慧製造 SMT 車間</option>
+              <option value="資訊安全稽核部">資訊安全稽核部</option>
+              <option value="品質保證處">品質保證處</option>
+              <option value="全球運籌物流總處">全球運籌物流總處</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>申請權限項目</label>
+            <input type="text" class="form-ctrl" id="newReqItem" placeholder="例如：MES Production 寫入權限、VPN 存取" required>
+          </div>
+          <div class="form-row">
+            <label>申請事由說明</label>
+            <textarea class="form-ctrl" id="newReqReason" placeholder="請詳述業務需求與主管核准依據..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" data-close="modalCreate">取消</button>
+          <button type="submit" class="btn-primary" id="btnSubmitCreate">
+            <span class="spinner-btn" id="createSpinner"></span>
+            <span id="createBtnText">確認送出申請</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 跳窗 2：主管審批確認 Modal -->
+  <div class="modal-backdrop" id="modalApprove">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">主管簽核審批</h3>
+        <button class="modal-close" data-close="modalApprove">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 0.75rem;">您即將核准此筆申請單，系統將自動派發憑證與帳號權限：</p>
+        <div style="background:#F8FAFC; border:1px solid var(--border-light); padding:0.85rem; border-radius:6px; margin-bottom:1rem; font-size:0.85rem;">
+          <div><b>單號：</b><span id="approveReqId" style="font-family:monospace;"></span></div>
+          <div style="margin-top:4px;"><b>同仁：</b><span id="approveReqName"></span></div>
+          <div style="margin-top:4px;"><b>權限：</b><span id="approveReqItem"></span></div>
+        </div>
+        <div class="form-row">
+          <label>主管簽核備註 (選填)</label>
+          <input type="text" class="form-ctrl" id="approveComment" placeholder="同意派發，符合業務需求" value="同意派發">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close="modalApprove">取消</button>
+        <button type="button" class="btn-primary" id="btnConfirmApprove">
+          <span class="spinner-btn" id="approveSpinner"></span>
+          <span id="approveBtnText">核准生效</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 跳窗 3：詳細檢視 / 歷程時間軸 Modal -->
+  <div class="modal-backdrop" id="modalHistory">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">申請單完整生命週期歷程</h3>
+        <button class="modal-close" data-close="modalHistory">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 1rem; font-size: 0.85rem;">
+          <b>申請編號：</b><span id="historyReqId" style="font-family: monospace; font-weight: 700; color: var(--primary);"></span>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot done"></div>
+            <div class="timeline-time">2026-10-06 09:30:15</div>
+            <div class="timeline-content">員工提出申請，系統自動觸發資安合規檢查</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot done"></div>
+            <div class="timeline-time">2026-10-06 09:32:00</div>
+            <div class="timeline-content">單位直屬主管簽核通過</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot done"></div>
+            <div class="timeline-time">2026-10-06 10:00:22</div>
+            <div class="timeline-content">IT 系統管理員 (王大明) 完成權限派發與稽核側錄配置</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close="modalHistory">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript 互動核心 -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const menuToggle = document.getElementById('menuToggle');
-      const sidebar = document.getElementById('sidebar');
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      let icon = '✔';
+      if (type === 'danger') icon = '✖';
+      if (type === 'info') icon = 'ℹ';
+      toast.innerHTML = `<span style="font-weight:700; color: currentColor;">${icon}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
 
-      if (menuToggle && sidebar) {
-        menuToggle.addEventListener('click', (e) => {
-          e.stopPropagation();
-          sidebar.classList.toggle('open');
-        });
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('active');
+    }
 
-        // 點擊側邊欄外部區域時自動收合
-        document.addEventListener('click', (e) => {
-          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-            sidebar.classList.remove('open');
-          }
-        });
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('active');
+    }
+
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close')));
+    });
+
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) backdrop.classList.remove('active');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.active').forEach(m => m.classList.remove('active'));
+        document.getElementById('notifPopover').classList.remove('active');
       }
     });
+
+    // ========================================================
+    // 真實產生與下載 Excel / CSV 檔案功能 (帶 UTF-8 BOM 防亂碼)
+    // ========================================================
+    function downloadCSVReport() {
+      // 提取表格中目前所有的列資料
+      const rows = document.querySelectorAll('#tableBody tr');
+      let csvContent = '\uFEFF'; // 加入 UTF-8 BOM，確保 Excel 雙擊打開繁體中文不亂碼
+      csvContent += '申請單號,申請同仁,所屬部門,權限項目,申請時間,目前審核狀態,系統稽核記錄\n';
+
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 6) {
+          const reqId = cols[0].innerText.trim();
+          const name = `"${cols[1].innerText.trim()}"`;
+          const dept = `"${cols[2].innerText.trim()}"`;
+          const item = `"${cols[3].innerText.trim()}"`;
+          const time = cols[4].innerText.trim();
+          const status = cols[5].innerText.trim();
+          const note = '"已納入集團 CESBG IT 稽核備查存檔"';
+
+          csvContent += `${reqId},${name},${dept},${item},${time},${status},${note}\n`;
+        }
+      });
+
+      // 產生 Blob 物件並觸發下載
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      const filename = `Foxconn_CESB_Audit_Report_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.csv`;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // 匯出報表按鈕 Loading 與觸發下載
+    const btnExport = document.getElementById('btnExport');
+    const exportIcon = document.getElementById('exportIcon');
+    const exportText = document.getElementById('exportText');
+
+    btnExport.addEventListener('click', () => {
+      btnExport.disabled = true;
+      btnExport.classList.add('btn-loading');
+      exportIcon.style.display = 'none';
+      exportText.textContent = '產生報表中...';
+
+      setTimeout(() => {
+        // 真實觸發下載
+        downloadCSVReport();
+
+        btnExport.disabled = false;
+        btnExport.classList.remove('btn-loading');
+        exportIcon.style.display = 'inline-block';
+        exportText.textContent = '匯出報表 (Excel)';
+        showToast('報表下載完成！已生成 Foxconn_CESB_Audit_Report.csv 檔案。', 'success');
+      }, 1200);
+    });
+
+    // 新增申請單
+    document.getElementById('btnOpenCreateModal').addEventListener('click', () => openModal('modalCreate'));
+    const formCreateRequest = document.getElementById('formCreateRequest');
+    const btnSubmitCreate = document.getElementById('btnSubmitCreate');
+    const createBtnText = document.getElementById('createBtnText');
+
+    formCreateRequest.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('newReqName').value.trim();
+      const dept = document.getElementById('newReqDept').value;
+      const item = document.getElementById('newReqItem').value.trim();
+
+      btnSubmitCreate.disabled = true;
+      btnSubmitCreate.classList.add('btn-loading');
+      createBtnText.textContent = '建立中...';
+
+      setTimeout(() => {
+        btnSubmitCreate.disabled = false;
+        btnSubmitCreate.classList.remove('btn-loading');
+        createBtnText.textContent = '確認送出申請';
+        closeModal('modalCreate');
+        formCreateRequest.reset();
+
+        const newId = `#REQ-2026-08${Math.floor(Math.random() * 90) + 10}`;
+        const now = new Date();
+        const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        
+        const tableBody = document.getElementById('tableBody');
+        const newRow = document.createElement('tr');
+        newRow.className = 'row-highlight';
+        const statusId = `status-${Date.now()}`;
+        newRow.innerHTML = `
+          <td style="font-family: monospace; font-weight: 600;">${newId}</td>
+          <td>${name}</td>
+          <td>${dept}</td>
+          <td>${item}</td>
+          <td>${timeStr}</td>
+          <td><span class="badge badge-warning" id="${statusId}">審核中</span></td>
+          <td>
+            <button class="action-btn" onclick="openApproveModal('${newId}', '${name}', '${item}', '${statusId}')">審批</button>
+            <button class="action-btn action-reject" onclick="openRejectModal('${newId}', '${name}', '${statusId}')">駁回</button>
+            <button class="action-btn" onclick="openHistoryModal('${newId}')">歷程</button>
+          </td>
+        `;
+        tableBody.insertBefore(newRow, tableBody.firstChild);
+        showToast(`申請單 ${newId} 已建立成功！`, 'success');
+      }, 900);
+    });
+
+    // 審批核准
+    let currentApproveTarget = null;
+    window.openApproveModal = function(reqId, name, item, statusElementId) {
+      currentApproveTarget = { reqId, statusElementId };
+      document.getElementById('approveReqId').textContent = reqId;
+      document.getElementById('approveReqName').textContent = name;
+      document.getElementById('approveReqItem').textContent = item;
+      openModal('modalApprove');
+    };
+
+    const btnConfirmApprove = document.getElementById('btnConfirmApprove');
+    const approveBtnText = document.getElementById('approveBtnText');
+    btnConfirmApprove.addEventListener('click', () => {
+      btnConfirmApprove.disabled = true;
+      btnConfirmApprove.classList.add('btn-loading');
+      approveBtnText.textContent = '簽核中...';
+
+      setTimeout(() => {
+        btnConfirmApprove.disabled = false;
+        btnConfirmApprove.classList.remove('btn-loading');
+        approveBtnText.textContent = '核准生效';
+        closeModal('modalApprove');
+
+        if (currentApproveTarget) {
+          const statusBadge = document.getElementById(currentApproveTarget.statusElementId);
+          if (statusBadge) {
+            statusBadge.className = 'badge badge-success';
+            statusBadge.textContent = '已核准';
+          }
+          showToast(`單號 ${currentApproveTarget.reqId} 已核准生效！`, 'success');
+        }
+      }, 800);
+    });
+
+    window.openRejectModal = function(reqId, name, statusElementId) {
+      if (confirm(`確定要駁回同仁 ${name} 的申請單 (${reqId}) 嗎？`)) {
+        const statusBadge = document.getElementById(statusElementId);
+        if (statusBadge) {
+          statusBadge.className = 'badge badge-danger';
+          statusBadge.textContent = '已駁回';
+        }
+        showToast(`已駁回申請單 ${reqId}。`, 'danger');
+      }
+    };
+
+    window.openHistoryModal = function(reqId) {
+      document.getElementById('historyReqId').textContent = reqId;
+      openModal('modalHistory');
+    };
+
+    window.openDetailModal = function(reqId, name, dept, item, status) {
+      showToast(`檢視 ${reqId} (${name} · ${item}) 狀態：${status}`, 'info');
+    };
+
+    // 表格搜尋
+    const tableFilterInput = document.getElementById('tableFilterInput');
+    tableFilterInput.addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#tableBody tr');
+      let count = 0;
+      rows.forEach(row => {
+        if (row.textContent.toLowerCase().includes(keyword)) {
+          row.style.display = '';
+          count++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+      document.getElementById('tableCountText').textContent = `顯示 ${count} 筆資料`;
+    });
+
+    // 通知
+    const notifBtn = document.getElementById('notifBtn');
+    const notifPopover = document.getElementById('notifPopover');
+    notifBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifPopover.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!notifPopover.contains(e.target) && !notifBtn.contains(e.target)) {
+        notifPopover.classList.remove('active');
+      }
+    });
+    document.getElementById('markAllRead').addEventListener('click', () => {
+      document.getElementById('notifDot').style.display = 'none';
+      notifPopover.classList.remove('active');
+      showToast('所有通知已標為已讀！', 'info');
+    });
+
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+      });
+      document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      });
+    }
   </script>
 
 </body>

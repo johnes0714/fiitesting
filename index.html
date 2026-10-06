@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>鴻海科技集團 | 內部系統網站模板大全 (10+ 現代白極簡樣板)</title>
+  <title>鴻海科技集團 | 內部系統網站模板大全 (企業級套用全套規格)</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,8 +22,19 @@
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
       --shadow-hover: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-page); color: var(--text-main); line-height: 1.5; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
 
     /* 頂部 Hero 區塊 */
     .hero {
@@ -31,22 +43,76 @@
       padding: 3.5rem 1.5rem 2.5rem;
       text-align: center;
     }
-    .hero-container { max-width: 960px; margin: 0 auto; }
-    .brand-logo-hero { height: 46px; width: auto; margin-bottom: 1.25rem; }
-    .hero-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; color: #0F172A; }
-    .hero-desc { font-size: 1.05rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 1.5rem; }
-    
-    .badge-bar { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
-    .pill { background: #F1F5F9; color: #475569; font-size: 0.8rem; font-weight: 600; padding: 4px 12px; border-radius: 9999px; }
-    .pill-blue { background: #EFF6FF; color: #1D4ED8; }
+
+    .hero-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .brand-logo-hero {
+      height: 46px;
+      width: auto;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      color: #0F172A;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      background: #F1F5F9;
+      color: #475569;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    .pill-blue {
+      background: #EFF6FF;
+      color: #1D4ED8;
+    }
 
     /* 模板網格展示區 */
-    .catalog-section { max-width: 1400px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-    .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; }
-    
+    .catalog-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
     .template-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 1.5rem;
     }
 
@@ -65,22 +131,76 @@
       color: inherit;
       position: relative;
     }
+
     .tpl-card:hover {
       box-shadow: var(--shadow-hover);
       transform: translateY(-3px);
       border-color: #CBD5E1;
     }
 
-    .tpl-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
-    .tpl-index { font-size: 0.75rem; font-weight: 700; color: var(--primary); background: #EFF6FF; padding: 2px 8px; border-radius: 4px; font-family: monospace; }
-    .tpl-tag { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
-    .tag-mfg { background: #DCFCE7; color: #16A34A; }
-    .tag-data { background: #EEF2FF; color: #4F46E5; }
-    .tag-sec { background: #FEF3C7; color: #D97706; }
-    .tag-adm { background: #F1F5F9; color: #475569; }
+    .tpl-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
 
-    .tpl-title { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; }
-    .tpl-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1; }
+    .tpl-index {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #EFF6FF;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .tpl-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    .tag-mfg {
+      background: #DCFCE7;
+      color: #16A34A;
+    }
+
+    .tag-data {
+      background: #EEF2FF;
+      color: #4F46E5;
+    }
+
+    .tag-sec {
+      background: #FEF3C7;
+      color: #D97706;
+    }
+
+    .tag-adm {
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    .tag-sys {
+      background: #FCE7F3;
+      color: #DB2777;
+    }
+
+    .tpl-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .tpl-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
 
     .tpl-meta {
       border-top: 1px solid var(--border);
@@ -90,12 +210,27 @@
       align-items: center;
       font-size: 0.85rem;
     }
-    .view-link { color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+    .view-link {
+      color: var(--primary);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     /* 頁尾 */
-    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); background: #FFFFFF; font-size: 0.85rem; color: var(--text-muted); }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      background: #FFFFFF;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Hero Header -->
@@ -104,26 +239,26 @@
       <img src="assets/images/logo.png" alt="Company Logo" class="brand-logo-hero" onerror="this.src='images/main.png'">
       <h1 class="hero-title">鴻海科技集團 · 內部企業級網站模板庫</h1>
       <p class="hero-desc">
-        針對智慧製造（Smart Manufacturing）、工業物聯網（IoT）、巨量數據戰情（Big Data）與資訊安全合規（InfoSec Compliance）量身打造的 10+ 現代白極簡樣板，均為純 HTML+CSS+少量 JS，零外部套件依賴，開箱即用。
+        針對智慧製造（Smart Manufacturing）、工業物聯網（IoT）、巨量數據戰情（Big Data）與資訊安全合規（InfoSec Compliance）量身打造之全套 15
+        款企業生產級樣板。具備**真實在地資料下載 (CSV/Excel)**、**跳窗系統 (Modal)**、**按鈕載入動畫 (Loading)** 與 **UI 元件字典**。
       </p>
       <div class="badge-bar">
         <span class="pill pill-blue">風格：Clean & Minimalist 簡約白灰</span>
-        <span class="pill">零依賴 (Pure HTML & CSS)</span>
-        <span class="pill">支援 RWD 自適應</span>
-        <span class="pill">品牌 Logo & Favicon 規格整合</span>
+        <span class="pill">零相依性 (Pure HTML & CSS)</span>
+        <span class="pill">支援 RWD 自適應與車間全螢幕</span>
+        <span class="pill">實裝 Excel 報表真實下載 (UTF-8)</span>
       </div>
     </div>
   </header>
 
   <!-- 模板展覽清單 -->
   <main class="catalog-section">
+
+    <!-- 基礎架構與系統元件規範區 -->
     <div class="section-title">
-      <span>全系列 12 款模板快速入口 (含登入與通用儀表板)</span>
-      <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">點擊任一卡片即可開啟預覽</span>
+      <span>⚙️ 基礎核心入口與系統規範字典 (Core & Standards)</span>
     </div>
-
-    <div class="template-grid">
-
+    <div class="template-grid" style="margin-bottom: 2.5rem;">
       <!-- 登入頁 -->
       <a href="login.html" class="tpl-card">
         <div>
@@ -132,7 +267,7 @@
             <span class="tpl-tag tag-adm">基礎入口</span>
           </div>
           <h2 class="tpl-title">系統登入驗證頁 (Login Portal)</h2>
-          <p class="tpl-desc">居中極簡白卡片排版、Logo 標誌、員工帳號/密碼輸入框、密碼明文切換、記住我與忘記密碼連結。</p>
+          <p class="tpl-desc">登入按鈕 Loading 動畫跳轉、忘記密碼發送驗證碼 Modal 跳窗、集團資安守則彈出視窗與密碼明文切換。</p>
         </div>
         <div class="tpl-meta">
           <span style="color: var(--text-muted);">檔案：login.html</span>
@@ -140,21 +275,76 @@
         </div>
       </a>
 
-      <!-- 基礎通用儀表板 -->
+      <!-- 通用儀表板 -->
       <a href="dashboard.html" class="tpl-card">
         <div>
           <div class="tpl-header">
             <span class="tpl-index">ADMIN</span>
             <span class="tpl-tag tag-adm">通用後台</span>
           </div>
-          <h2 class="tpl-title">通用營運儀表板 (General Admin)</h2>
-          <p class="tpl-desc">完整左側邊欄導覽 (Sidebar)、頂部搜尋與鈴鐺 (Header)、4 張 KPI 統計卡片、權限申請數據表格與分頁。</p>
+          <h2 class="tpl-title">營運管理儀表板 (General Admin)</h2>
+          <p class="tpl-desc">新增申請單 Modal、主管審批核准 Modal、歷程時間軸、真實產生 Excel CSV 檔案下載、表格即時篩選搜尋。</p>
         </div>
         <div class="tpl-meta">
           <span style="color: var(--text-muted);">檔案：dashboard.html</span>
           <span class="view-link">開啟預覽 →</span>
         </div>
       </a>
+
+      <!-- UI 元件庫字典 -->
+      <a href="components.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">UI KIT</span>
+            <span class="tpl-tag tag-sys">開發字典</span>
+          </div>
+          <h2 class="tpl-title">UI 元件庫字典 (Design System)</h2>
+          <p class="tpl-desc">包含按鈕狀態、表單控制項、Switch 開關、狀態徽章 Badges、骨架屏 (Skeleton Loading)、空狀態 (Empty State) 程式碼規範。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">檔案：components.html</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 個人設定 -->
+      <a href="settings.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">USER</span>
+            <span class="tpl-tag tag-adm">帳號中心</span>
+          </div>
+          <h2 class="tpl-title">個人檔案與系統設定 (Settings)</h2>
+          <p class="tpl-desc">同仁基本檔案資料卡、更新密碼 (至少12碼密碼規則)、雙因子 MFA 安全防護與產線停機簡訊推播開關。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">檔案：settings.html</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+
+      <!-- 403 缺省頁 -->
+      <a href="403.html" class="tpl-card">
+        <div>
+          <div class="tpl-header">
+            <span class="tpl-index">ERROR</span>
+            <span class="tpl-tag tag-sec">權限異常</span>
+          </div>
+          <h2 class="tpl-title">403 權限不足缺省頁 (Access Denied)</h2>
+          <p class="tpl-desc">當員工無特定機密模組存取授權時之友善引導頁面，附帶線上申請開通與返回按鈕。</p>
+        </div>
+        <div class="tpl-meta">
+          <span style="color: var(--text-muted);">檔案：403.html</span>
+          <span class="view-link">開啟預覽 →</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 10 款專用製造與大數據戰情模板 -->
+    <div class="section-title">
+      <span>🏭 10 款智慧製造、大數據與工業物聯網戰情看板 (Manufacturing & Big Data)</span>
+    </div>
+    <div class="template-grid">
 
       <!-- 模板 1 -->
       <a href="tpl-01-manufacturing-lines.html" class="tpl-card">
@@ -164,10 +354,10 @@
             <span class="tpl-tag tag-mfg">智慧製造</span>
           </div>
           <h2 class="tpl-title">SMT 產線即時看板 (OEE & Production)</h2>
-          <p class="tpl-desc">高速 SMT/組裝產線監控、綜合設備效率 (OEE 89.4%)、工單達成進度條、一次直通率 (FPY) 與現場異常工位。</p>
+          <p class="tpl-desc">高速 SMT 產線監控、OEE (89.4%)、一次直通率 (FPY)、機台參數跳窗、切換廠區跳窗與真實匯出 OEE 報表 CSV 下載。</p>
         </div>
         <div class="tpl-meta">
-          <span style="color: var(--text-muted);">現場車間大屏 / 看板</span>
+          <span style="color: var(--text-muted);">車間大屏看板</span>
           <span class="view-link">開啟預覽 →</span>
         </div>
       </a>
@@ -324,4 +514,5 @@
   </footer>
 
 </body>
+
 </html>

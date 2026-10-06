@@ -16,6 +16,7 @@
       --text-muted: #64748B;
       --border: #E2E8F0;
       --primary: #0284C7;
+      --primary-hover: #0369A1;
       --primary-light: #E0F2FE;
       --success: #16A34A;
       --success-bg: #DCFCE7;
@@ -25,6 +26,7 @@
       --danger-bg: #FEE2E2;
       --radius: 8px;
       --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-body); color: var(--text-main); }
@@ -63,7 +65,7 @@
 
     /* 主容器 */
     main { max-width: 1600px; margin: 0 auto; padding: 1.5rem; }
-    .breadcrumb-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .breadcrumb-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem; }
     .title-group h1 { font-size: 1.35rem; font-weight: 700; }
     .title-group p { font-size: 0.85rem; color: var(--text-muted); margin-top: 3px; }
 
@@ -76,7 +78,8 @@
 
     /* 產線即時狀態卡片 Grid */
     .line-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; }
-    .line-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+    .line-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s ease; }
+    .line-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); border-color: #CBD5E1; }
     .line-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
     .line-name { font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
     .status-tag { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
@@ -101,20 +104,118 @@
     th { background: #F8FAFC; color: var(--text-muted); padding: 0.75rem 1.25rem; font-weight: 600; border-bottom: 1px solid var(--border); }
     td { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); }
     tr:hover td { background: #FAFAFA; }
+
+    /* 按鈕樣式 */
+    .btn-white {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-white:hover { background: #F8FAFC; }
+
+    .btn-sky {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-sky:hover { background: var(--primary-hover); }
+
+    .spinner-btn {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+    .loading .spinner-btn { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Modal 跳窗 */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .modal-backdrop.active { opacity: 1; visibility: visible; }
+    .modal-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: 500px;
+      padding: 1.75rem;
+      transform: scale(0.96);
+      transition: transform 0.2s ease;
+    }
+    .modal-backdrop.active .modal-box { transform: scale(1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .modal-title { font-size: 1.15rem; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 1.3rem; color: var(--text-muted); cursor: pointer; }
+    .modal-close:hover { color: var(--text-main); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
+
+    /* Toast */
+    .toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 200; display: flex; flex-direction: column; gap: 0.75rem; }
+    .toast {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 6px;
+      padding: 0.85rem 1.25rem;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show { transform: translateX(0); opacity: 1; }
   </style>
 </head>
 <body>
 
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <header>
     <div class="brand-box">
       <img src="assets/images/logo.png" alt="Logo" class="brand-logo" onerror="this.src='images/main.png'">
-      <div class="brand-title">智慧製造 (Smart MES) | 龍華科技園區 A04 廠</div>
+      <div class="brand-title" id="currentPlantText">智慧製造 (Smart MES) | 龍華科技園區 A04 廠</div>
       <div class="badge-live"><span class="pulse-dot"></span>即時數據連線中 (1,000ms)</div>
     </div>
     <div class="header-actions">
       <span>目前班別：<b>早班 (Shift A)</b></span>
       <span>|</span>
-      <span>更新時間：<span class="mono">11:30:15</span></span>
+      <span>更新時間：<span class="mono" id="clockText">11:30:15</span></span>
       <a href="index.html" style="margin-left: 1rem; color: var(--primary); text-decoration: none; font-weight: 600;">← 返回模板總表</a>
     </div>
   </header>
@@ -125,9 +226,19 @@
         <h1>SMT / 終端組裝產線 (OEE) 綜合戰情看板</h1>
         <p>監控 12 條高速自動化表面黏著產線之良率、瓶頸工位與工單達成率</p>
       </div>
-      <div>
-        <button style="background: #FFFFFF; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer;">全螢幕模式 (F11)</button>
-        <button style="background: var(--primary); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; margin-left: 6px;">切換廠區</button>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn-white" id="btnExportOEE">
+          <svg style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span id="exportOeeText">匯出 OEE 報表</span>
+        </button>
+        <button class="btn-white" id="btnFullscreen">
+          <svg style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 1-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+          全螢幕模式
+        </button>
+        <button class="btn-sky" id="btnChangePlant">
+          <svg style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          切換廠區
+        </button>
       </div>
     </div>
 
@@ -167,10 +278,10 @@
       </div>
     </div>
 
-    <!-- 產線即時狀態卡片 -->
+    <!-- 產線即時狀態卡片 (可點擊跳窗查看機台參數) -->
     <div class="line-grid">
       <!-- Line 01 -->
-      <div class="line-card">
+      <div class="line-card" onclick="openLineModal('SMT-Line #01 (主板旗艦線)', '91.8%', '99.4%', '2.8s', 'WO-2610-01', '正常運行中')">
         <div class="line-header">
           <div class="line-name">SMT-Line #01 (主板旗艦線)</div>
           <span class="status-tag status-running">正常運行中</span>
@@ -192,7 +303,7 @@
       </div>
 
       <!-- Line 02 -->
-      <div class="line-card">
+      <div class="line-card" onclick="openLineModal('SMT-Line #02 (高密度射頻模組)', '88.5%', '99.1%', '3.1s', 'WO-2610-02', '正常運行中')">
         <div class="line-header">
           <div class="line-name">SMT-Line #02 (高密度射頻模組)</div>
           <span class="status-tag status-running">正常運行中</span>
@@ -214,7 +325,7 @@
       </div>
 
       <!-- Line 03 -->
-      <div class="line-card">
+      <div class="line-card" onclick="openLineModal('SMT-Line #03 (穿戴式感測板)', '74.2%', '98.9%', '待料中', 'WO-2610-03', '料件換線中')">
         <div class="line-header">
           <div class="line-name">SMT-Line #03 (穿戴式感測板)</div>
           <span class="status-tag status-paused">料件換線中</span>
@@ -290,5 +401,171 @@
       </table>
     </div>
   </main>
+
+  <!-- 跳窗 1：產線詳細參數跳窗 (Line Detail Modal) -->
+  <div class="modal-backdrop" id="modalLineDetail">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="mLineTitle">產線即時詳細參數</h3>
+        <button class="modal-close" onclick="closeModal('modalLineDetail')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#F8FAFC; border:1px solid var(--border); padding:1rem; border-radius:6px; margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="color:var(--text-muted);">執行工單：</span>
+            <span class="mono" id="mLineWO" style="font-weight:700;"></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="color:var(--text-muted);">OEE 設備綜合效率：</span>
+            <span class="mono" id="mLineOEE" style="font-weight:700; color:#16A34A;"></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="color:var(--text-muted);">一次直通良率 (FPY)：</span>
+            <span class="mono" id="mLineFPY" style="font-weight:700;"></span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">目前節拍時間 (CT)：</span>
+            <span class="mono" id="mLineCT" style="font-weight:700;"></span>
+          </div>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          聯網感測器包含：錫膏厚度檢查機 (SPI)、高精度貼片機 (4 台串聯)、10 溫區迴焊爐與 3D AOI 光學檢測儀。
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-white" onclick="closeModal('modalLineDetail')">關閉</button>
+        <button class="btn-sky" onclick="showToast('已將此產線設定置頂關注', 'success'); closeModal('modalLineDetail');">置頂關注此線</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 跳窗 2：切換廠區 Modal (Change Plant Modal) -->
+  <div class="modal-backdrop" id="modalPlant">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">切換製造廠區戰情視角</h3>
+        <button class="modal-close" onclick="closeModal('modalPlant')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">請選擇您欲調閱數據之集團科技園區與廠別：</p>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <label style="display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; cursor:pointer;">
+            <input type="radio" name="plantOption" value="深圳龍華科技園區 A04 廠" checked>
+            <span><b>深圳龍華科技園區 A04 廠</b> (高階智慧主板)</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; cursor:pointer;">
+            <input type="radio" name="plantOption" value="鄭州航空港科技園區 K 區">
+            <span><b>鄭州航空港科技園區 K 區</b> (旗艦終端組裝)</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--border); border-radius:6px; cursor:pointer;">
+            <input type="radio" name="plantOption" value="印度清奈 Sriperumbudur 園區">
+            <span><b>印度清奈園區</b> (海外擴產基地)</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-white" onclick="closeModal('modalPlant')">取消</button>
+        <button class="btn-sky" id="btnConfirmSwitchPlant">
+          <span class="spinner-btn" id="plantSpinner"></span>
+          <span id="plantBtnText">確認切換</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>✔</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // 點擊卡片跳窗
+    window.openLineModal = function(name, oee, fpy, ct, wo, status) {
+      document.getElementById('mLineTitle').textContent = name;
+      document.getElementById('mLineOEE').textContent = oee;
+      document.getElementById('mLineFPY').textContent = fpy;
+      document.getElementById('mLineCT').textContent = ct;
+      document.getElementById('mLineWO').textContent = wo;
+      openModal('modalLineDetail');
+    };
+
+    // 切換廠區
+    document.getElementById('btnChangePlant').addEventListener('click', () => openModal('modalPlant'));
+    document.getElementById('btnConfirmSwitchPlant').addEventListener('click', () => {
+      const selected = document.querySelector('input[name="plantOption"]:checked').value;
+      const btn = document.getElementById('btnConfirmSwitchPlant');
+      btn.classList.add('loading');
+      btn.disabled = true;
+      document.getElementById('plantBtnText').textContent = '資料載入中...';
+
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        document.getElementById('plantBtnText').textContent = '確認切換';
+        closeModal('modalPlant');
+        document.getElementById('currentPlantText').textContent = `智慧製造 (Smart MES) | ${selected}`;
+        showToast(`已成功切換至 ${selected}，數據已同步！`, 'success');
+      }, 900);
+    });
+
+    // 全螢幕切換
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+          showToast('已進入車間全螢幕看板模式 (按 ESC 退出)', 'success');
+        }).catch(() => {
+          showToast('瀏覽器全螢幕模式已觸發', 'success');
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // 匯出產線 OEE 報表 (真實產生 UTF-8 CSV 檔案)
+    document.getElementById('btnExportOEE').addEventListener('click', () => {
+      const btn = document.getElementById('btnExportOEE');
+      const text = document.getElementById('exportOeeText');
+      btn.disabled = true;
+      text.textContent = '產生中...';
+
+      setTimeout(() => {
+        let csv = '\uFEFF產線名稱,工單編號,機種名稱,目標數量,已產出數量,達成率,OEE效率,直通良率,節拍時間,負責人員\n';
+        csv += 'SMT-Line #01,WO-FOX-202610-001,A-Series Main Motherboard Rev.4,5000,4700,94.0%,91.8%,99.4%,2.8s,陳主任 (SMT-Lead)\n';
+        csv += 'SMT-Line #02,WO-FOX-202610-002,Optical Sensor Array v2,5000,4100,82.0%,88.5%,99.1%,3.1s,林技師 (PE-Engineer)\n';
+        csv += 'SMT-Line #03,WO-FOX-202610-003,Ultra-Slim Power IC Flex,3000,1350,45.0%,74.2%,98.9%,待料,張組長 (Operator)\n';
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Foxconn_SMT_OEE_DailyReport_${new Date().toISOString().slice(0,10).replace(/-/g,'')}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        btn.disabled = false;
+        text.textContent = '匯出 OEE 報表';
+        showToast('產線 OEE 報表下載完成！可直接用 Excel 開啟。', 'success');
+      }, 1000);
+    });
+
+    // 時間更新
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('clockText').textContent = d.toTimeString().split(' ')[0];
+    }, 1000);
+  </script>
 </body>
 </html>
